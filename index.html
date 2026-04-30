@@ -57,12 +57,49 @@
       <div class="section-header">
         <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
         <div>
-          <p class="eyebrow">Quiz Game</p>
-          <h2>Computer Basics Quiz</h2>
+          <p class="eyebrow">Smart Quiz Game</p>
+          <h2>Computer Quiz Generator</h2>
         </div>
       </div>
 
-      <div class="game-card">
+      <div class="game-card quiz-setup-card" id="quizSetup">
+        <div>
+          <p class="eyebrow">Choose Your Quiz</p>
+          <h3>New questions every time</h3>
+          <p class="setup-copy">Select your class and level. The quiz will generate a fresh set of computer questions automatically.</p>
+        </div>
+
+        <div class="quiz-options">
+          <label class="select-field" for="classSelect">
+            <span>Class</span>
+            <select id="classSelect">
+              <option value="1">Class 1</option>
+              <option value="2">Class 2</option>
+              <option value="3">Class 3</option>
+              <option value="4">Class 4</option>
+              <option value="5">Class 5</option>
+              <option value="6">Class 6</option>
+              <option value="7">Class 7</option>
+              <option value="8">Class 8</option>
+              <option value="9">Class 9</option>
+              <option value="10">Class 10</option>
+            </select>
+          </label>
+
+          <label class="select-field" for="levelSelect">
+            <span>Level</span>
+            <select id="levelSelect">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+
+          <button class="primary-button" id="generateQuizBtn" type="button">Generate Quiz</button>
+        </div>
+      </div>
+
+      <div class="game-card hidden" id="quizPlayCard">
         <div class="game-meta">
           <span id="quizCount">Question 1 of 5</span>
           <span>Score: <strong id="quizScore">0</strong></span>

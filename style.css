@@ -308,6 +308,50 @@ h1 {
   border-radius: 24px;
 }
 
+.quiz-setup-card {
+  margin-bottom: 18px;
+}
+
+.setup-copy {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+  align-items: end;
+}
+
+.select-field {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.select-field select {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 14px;
+  border: 2px solid #d8e2fb;
+  border-radius: 16px;
+  color: var(--ink);
+  background: var(--white);
+  box-shadow: var(--small-shadow);
+  font: inherit;
+  font-weight: 800;
+}
+
+.question-pop {
+  animation: question-pop 260ms ease;
+}
+
 .game-meta {
   display: flex;
   justify-content: space-between;
@@ -355,15 +399,26 @@ h1 {
 .choice-button.correct {
   color: var(--white);
   background: var(--correct);
+  animation: correct-pop 480ms ease;
 }
 
 .choice-button.wrong {
   color: var(--white);
   background: var(--wrong);
+  animation: wrong-shake 340ms ease;
 }
 
 .choice-button:disabled {
   cursor: default;
+}
+
+.answer-spark {
+  position: fixed;
+  z-index: 25;
+  pointer-events: none;
+  color: #ffcf5a;
+  font-size: 1.25rem;
+  animation: spark-float 720ms ease-out forwards;
 }
 
 .feedback {
@@ -517,6 +572,59 @@ h1 {
   }
 }
 
+@keyframes correct-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes wrong-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-8px);
+  }
+
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes question-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spark-float {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-52px) scale(1.5);
+  }
+}
+
 @media (max-width: 780px) {
   .topbar {
     align-items: stretch;
@@ -531,6 +639,7 @@ h1 {
   .home-actions,
   .feature-grid,
   .choice-grid,
+  .quiz-options,
   .drag-layout,
   .drop-zone-grid {
     grid-template-columns: 1fr;
