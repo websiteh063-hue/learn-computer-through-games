@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Computer Through Games 🎮</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <button class="brand-button" id="homeLogo" type="button" aria-label="Go to homepage">
+      <span class="brand-icon">🎮</span>
+      <span>Learn Computer</span>
+    </button>
+    <div class="leaderboard" aria-live="polite">
+      <span>🏆 Best Score</span>
+      <strong id="bestScore">0</strong>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="screen home-screen active" id="homeScreen">
+      <div class="hero-card">
+        <p class="eyebrow">Mini Educational Game Platform</p>
+        <h1>Learn Computer Through Games 🎮</h1>
+        <p class="subtitle">Play, Learn, and Master Computer Basics</p>
+
+        <div class="home-actions" aria-label="Choose a game">
+          <button class="primary-button" id="startQuizBtn" type="button">Start Quiz</button>
+          <button class="primary-button accent" id="dragGameBtn" type="button">Drag & Drop Game</button>
+          <button class="primary-button warm" id="pictureGameBtn" type="button">Picture Game</button>
+        </div>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <span class="feature-icon">🧠</span>
+          <h2>Quick Quiz</h2>
+          <p>Answer one computer question at a time and watch your progress grow.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon">🖱️</span>
+          <h2>Sort Devices</h2>
+          <p>Drag input and output devices into the correct category.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon">🖼️</span>
+          <h2>Picture Match</h2>
+          <p>Recognize common computer icons through playful picture questions.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="screen game-screen" id="quizScreen">
+      <div class="section-header">
+        <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
+        <div>
+          <p class="eyebrow">Quiz Game</p>
+          <h2>Computer Basics Quiz</h2>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="game-meta">
+          <span id="quizCount">Question 1 of 5</span>
+          <span>Score: <strong id="quizScore">0</strong></span>
+        </div>
+
+        <div class="progress-track" aria-label="Quiz progress">
+          <div class="progress-fill" id="quizProgress"></div>
+        </div>
+
+        <h3 id="quizQuestion">Question text</h3>
+        <div class="choice-grid" id="quizChoices"></div>
+
+        <p class="feedback" id="quizFeedback" aria-live="polite"></p>
+
+        <button class="primary-button next-button" id="nextQuizBtn" type="button" disabled>Next</button>
+      </div>
+
+      <div class="game-card result-card hidden" id="quizResult">
+        <span class="result-icon">🏁</span>
+        <h2>Quiz Complete!</h2>
+        <p id="quizResultText"></p>
+        <button class="primary-button" id="restartQuizBtn" type="button">Restart Quiz</button>
+      </div>
+    </section>
+
+    <section class="screen game-screen" id="dragScreen">
+      <div class="section-header">
+        <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
+        <div>
+          <p class="eyebrow">Drag & Drop Game</p>
+          <h2>Input vs Output Devices</h2>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="game-meta">
+          <span>Drag each device into the correct box</span>
+          <span>Score: <strong id="dragScore">0</strong>/5</span>
+        </div>
+
+        <div class="drag-layout">
+          <div class="item-bank" id="deviceItems" aria-label="Device items"></div>
+
+          <div class="drop-zone-grid">
+            <div class="drop-zone" data-category="input">
+              <h3>Input</h3>
+              <p>Devices that send data to a computer</p>
+            </div>
+            <div class="drop-zone" data-category="output">
+              <h3>Output</h3>
+              <p>Devices that show or play results</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="feedback" id="dragFeedback" aria-live="polite"></p>
+        <button class="primary-button reset-button" id="resetDragBtn" type="button">Reset Game</button>
+      </div>
+    </section>
+
+    <section class="screen game-screen" id="pictureScreen">
+      <div class="section-header">
+        <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
+        <div>
+          <p class="eyebrow">Picture Recognition Game</p>
+          <h2>Guess the Computer Item</h2>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="game-meta">
+          <span id="pictureCount">Item 1 of 4</span>
+          <span>Score: <strong id="pictureScore">0</strong></span>
+        </div>
+
+        <div class="picture-display" id="pictureEmoji">🌐</div>
+        <h3>What is this?</h3>
+        <div class="choice-grid" id="pictureChoices"></div>
+
+        <p class="feedback" id="pictureFeedback" aria-live="polite"></p>
+        <button class="primary-button next-button" id="nextPictureBtn" type="button" disabled>Next</button>
+      </div>
+
+      <div class="game-card result-card hidden" id="pictureResult">
+        <span class="result-icon">🎉</span>
+        <h2>Picture Game Complete!</h2>
+        <p id="pictureResultText"></p>
+        <button class="primary-button" id="restartPictureBtn" type="button">Restart Picture Game</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
