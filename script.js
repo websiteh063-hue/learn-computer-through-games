@@ -101,43 +101,121 @@ function getNearbyClassQuestions(classNumber, level) {
   return quizBank[level].filter((item) => item.minClass <= classNumber);
 }
 
-function createGeneratedQuestion(classNumber, level, questionNumber) {
-  const topicByLevel = {
-    easy: [
-      ["input device", "Keyboard", ["Keyboard", "Monitor", "Speaker", "Printer"]],
-      ["output device", "Monitor", ["Monitor", "Keyboard", "Mouse", "Scanner"]],
-      ["web browser", "Chrome", ["Chrome", "Folder", "Recycle Bin", "Paint"]]
-    ],
-    medium: [
-      ["temporary memory", "RAM", ["RAM", "ROM", "Hard disk", "Pen drive"]],
-      ["document software", "MS Word", ["MS Word", "Chrome", "Paint", "Calculator"]],
-      ["computer network", "Internet", ["Internet", "Printer", "Keyboard", "Folder"]]
-    ],
-    hard: [
-      ["secure website protocol", "HTTPS", ["HTTPS", "HTTP", "CPU", "RAM"]],
-      ["web page structure language", "HTML", ["HTML", "CSS", "JavaScript", "SQL"]],
-      ["interactive web language", "JavaScript", ["JavaScript", "HTML", "CSS", "Router"]]
-    ]
-  };
-  const selected = topicByLevel[level][(classNumber + questionNumber) % topicByLevel[level].length];
+const generatedTopicBank = {
+  easy: [
+    { minClass: 1, clue: "the brain of the computer", answer: "CPU", choices: ["CPU", "Mouse", "Speaker", "Printer"] },
+    { minClass: 1, clue: "a typing input device", answer: "Keyboard", choices: ["Keyboard", "Monitor", "Printer", "Speaker"] },
+    { minClass: 1, clue: "a pointing input device", answer: "Mouse", choices: ["Mouse", "Monitor", "CPU", "Printer"] },
+    { minClass: 1, clue: "the screen of a computer", answer: "Monitor", choices: ["Monitor", "Keyboard", "Mouse", "Scanner"] },
+    { minClass: 1, clue: "a device that plays sound", answer: "Speaker", choices: ["Speaker", "Keyboard", "Scanner", "CPU"] },
+    { minClass: 2, clue: "the place where deleted files go", answer: "Recycle Bin", choices: ["Recycle Bin", "Chrome", "Folder", "Paint"] },
+    { minClass: 2, clue: "software used to visit websites", answer: "Chrome", choices: ["Chrome", "MS Word", "Folder", "Calculator"] },
+    { minClass: 2, clue: "a place used to organize files", answer: "Folder", choices: ["Folder", "Mouse", "Monitor", "Speaker"] },
+    { minClass: 3, clue: "a device that prints on paper", answer: "Printer", choices: ["Printer", "Monitor", "Keyboard", "Mouse"] },
+    { minClass: 3, clue: "software used to draw simple pictures", answer: "Paint", choices: ["Paint", "Chrome", "Recycle Bin", "Speaker"] },
+    { minClass: 4, clue: "the key used to make a blank space", answer: "Spacebar", choices: ["Spacebar", "Enter", "Shift", "Esc"] },
+    { minClass: 4, clue: "the key used to start a new line", answer: "Enter", choices: ["Enter", "Tab", "Caps Lock", "Ctrl"] },
+    { minClass: 5, clue: "the full form of AI", answer: "Artificial Intelligence", choices: ["Artificial Intelligence", "Automatic Internet", "Advanced Input", "Audio Interface"] },
+    { minClass: 6, clue: "a touch device that works as input and output", answer: "Touchscreen", choices: ["Touchscreen", "Printer", "Keyboard", "Speaker"] },
+    { minClass: 7, clue: "software used to make slides", answer: "PowerPoint", choices: ["PowerPoint", "Chrome", "Paint", "Recycle Bin"] },
+    { minClass: 8, clue: "a device that helps connect to a network", answer: "Router", choices: ["Router", "Printer", "Keyboard", "Monitor"] },
+    { minClass: 9, clue: "the language used to style websites", answer: "CSS", choices: ["CSS", "HTML", "RAM", "CPU"] },
+    { minClass: 10, clue: "the main heading tag in HTML", answer: "h1", choices: ["h1", "img", "br", "link"] }
+  ],
+  medium: [
+    { minClass: 1, clue: "a device that sends data into a computer", answer: "Input device", choices: ["Input device", "Output device", "Storage device", "Power device"] },
+    { minClass: 2, clue: "a device that gives results from a computer", answer: "Output device", choices: ["Output device", "Input device", "Folder", "Cursor"] },
+    { minClass: 3, clue: "temporary memory that clears when power is off", answer: "RAM", choices: ["RAM", "Hard disk", "Pen drive", "DVD"] },
+    { minClass: 4, clue: "software used to write documents", answer: "MS Word", choices: ["MS Word", "Chrome", "Paint", "Recycle Bin"] },
+    { minClass: 5, clue: "the shortcut used to copy", answer: "Ctrl + C", choices: ["Ctrl + C", "Ctrl + V", "Ctrl + Z", "Ctrl + P"] },
+    { minClass: 5, clue: "the shortcut used to paste", answer: "Ctrl + V", choices: ["Ctrl + V", "Ctrl + C", "Ctrl + S", "Ctrl + A"] },
+    { minClass: 6, clue: "software that manages computer hardware", answer: "Operating system", choices: ["Operating system", "Browser", "Keyboard", "Printer"] },
+    { minClass: 6, clue: "an example of an operating system", answer: "Windows", choices: ["Windows", "Chrome", "Keyboard", "Printer"] },
+    { minClass: 7, clue: "the number system that uses only 0 and 1", answer: "Binary", choices: ["Binary", "Decimal", "Roman", "Alphabet"] },
+    { minClass: 7, clue: "the unit larger than MB", answer: "GB", choices: ["GB", "KB", "Byte", "Bit"] },
+    { minClass: 8, clue: "the full form of URL", answer: "Uniform Resource Locator", choices: ["Uniform Resource Locator", "Universal Robot Link", "User Record Login", "Unit Resource Label"] },
+    { minClass: 8, clue: "secret-code protection for data", answer: "Encryption", choices: ["Encryption", "Formatting", "Scrolling", "Printing"] },
+    { minClass: 9, clue: "the language that gives web pages structure", answer: "HTML", choices: ["HTML", "CSS", "JavaScript", "SQL"] },
+    { minClass: 9, clue: "the language that makes web pages interactive", answer: "JavaScript", choices: ["JavaScript", "HTML", "CSS", "PNG"] },
+    { minClass: 10, clue: "the database language used to query data", answer: "SQL", choices: ["SQL", "HTML", "CSS", "HTTP"] },
+    { minClass: 10, clue: "the worldwide network of computers", answer: "Internet", choices: ["Internet", "Bluetooth", "Printer", "Folder"] }
+  ],
+  hard: [
+    { minClass: 1, clue: "a device that scans paper into a computer", answer: "Scanner", choices: ["Scanner", "Speaker", "Monitor", "CPU"] },
+    { minClass: 2, clue: "the key that makes capital letters when held", answer: "Shift", choices: ["Shift", "Enter", "Esc", "Tab"] },
+    { minClass: 3, clue: "a small portable storage device", answer: "Pen drive", choices: ["Pen drive", "Monitor", "Keyboard", "Speaker"] },
+    { minClass: 4, clue: "the action of arranging files in folders", answer: "Organizing", choices: ["Organizing", "Printing", "Typing", "Scrolling"] },
+    { minClass: 5, clue: "the part that performs calculations", answer: "Processor", choices: ["Processor", "Monitor", "Mouse", "Speaker"] },
+    { minClass: 6, clue: "the full form of CPU", answer: "Central Processing Unit", choices: ["Central Processing Unit", "Computer Power Unit", "Central Program Utility", "Control Print Unit"] },
+    { minClass: 7, clue: "the number of bits in one byte", answer: "8", choices: ["8", "2", "10", "16"] },
+    { minClass: 7, clue: "software that helps protect from viruses", answer: "Antivirus", choices: ["Antivirus", "Browser", "Spreadsheet", "Paint"] },
+    { minClass: 8, clue: "the protocol commonly used for secure websites", answer: "HTTPS", choices: ["HTTPS", "FTP", "PNG", "CPU"] },
+    { minClass: 8, clue: "an address that identifies a device on a network", answer: "IP address", choices: ["IP address", "Font name", "File icon", "Screen size"] },
+    { minClass: 9, clue: "the HTML element used to connect a CSS file", answer: "link", choices: ["link", "style", "script", "meta"] },
+    { minClass: 9, clue: "the CSS property that changes text color", answer: "color", choices: ["color", "font-size", "display", "margin"] },
+    { minClass: 10, clue: "the programming idea that repeats code", answer: "Loop", choices: ["Loop", "Variable", "Comment", "Array"] },
+    { minClass: 10, clue: "a data structure that stores values in order", answer: "Array", choices: ["Array", "Boolean", "Pixel", "Router"] },
+    { minClass: 10, clue: "the full form of API", answer: "Application Programming Interface", choices: ["Application Programming Interface", "Automatic Program Icon", "Applied Power Input", "Advanced Page Internet"] },
+    { minClass: 10, clue: "a fake-message attack that steals passwords", answer: "Phishing", choices: ["Phishing", "Formatting", "Printing", "Cropping"] }
+  ]
+};
+
+const questionForms = {
+  easy: [
+    "Class {class} easy #{number}: Which option means {clue}?",
+    "Class {class} easy practice #{number}: Pick the correct answer for {clue}.",
+    "Class {class} easy round #{number}: What is {clue}?",
+    "Class {class} easy quiz #{number}: Choose the computer term for {clue}."
+  ],
+  medium: [
+    "Class {class} medium #{number}: Identify {clue}.",
+    "Class {class} medium practice #{number}: Which answer best matches {clue}?",
+    "Class {class} medium round #{number}: Select the correct term for {clue}.",
+    "Class {class} medium quiz #{number}: What computer concept means {clue}?"
+  ],
+  hard: [
+    "Class {class} hard #{number}: Which technical answer describes {clue}?",
+    "Class {class} hard challenge #{number}: Choose the best match for {clue}.",
+    "Class {class} hard round #{number}: What is the correct concept for {clue}?",
+    "Class {class} hard quiz #{number}: Solve this computer concept: {clue}."
+  ]
+};
+
+function buildQuestionFromTopic(classNumber, level, questionNumber) {
+  const availableTopics = generatedTopicBank[level].filter((topic) => topic.minClass <= classNumber);
+  const topic = availableTopics[(questionNumber * 7 + classNumber) % availableTopics.length];
+  const form = questionForms[level][(questionNumber * 3 + classNumber) % questionForms[level].length];
+  const question = form
+    .replace("{class}", classNumber)
+    .replace("{number}", questionNumber + 1)
+    .replace("{clue}", topic.clue);
 
   return {
-    question: `Class ${classNumber}: Which answer matches ${selected[0]}?`,
-    answer: selected[1],
-    choices: selected[2]
+    question,
+    answer: topic.answer,
+    choices: shuffleArray(topic.choices)
   };
 }
 
-function generateQuiz(classNumber, level) {
-  const bank = getNearbyClassQuestions(classNumber, level);
-  const questionTarget = classNumber >= 8 || level === "hard" ? 8 : 6;
-  const chosen = shuffleArray(bank).slice(0, questionTarget);
+function buildQuestionPool(classNumber, level) {
+  const curatedQuestions = getNearbyClassQuestions(classNumber, level).map((item, index) => ({
+    question: `Class ${classNumber} ${level} starter #${index + 1}: ${item.question}`,
+    answer: item.answer,
+    choices: shuffleArray(item.choices)
+  }));
+  const generatedQuestions = [];
 
-  while (chosen.length < questionTarget) {
-    chosen.push(createGeneratedQuestion(classNumber, level, chosen.length));
+  for (let index = 0; index < 1000; index += 1) {
+    generatedQuestions.push(buildQuestionFromTopic(classNumber, level, index));
   }
 
-  return shuffleArray(chosen).map((item) => ({
+  return shuffleArray([...generatedQuestions, ...curatedQuestions]).slice(0, 1000);
+}
+
+function generateQuiz(classNumber, level) {
+  const questionPool = buildQuestionPool(classNumber, level);
+
+  return shuffleArray(questionPool).slice(0, 10).map((item) => ({
     ...item,
     choices: shuffleArray(item.choices)
   }));
