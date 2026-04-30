@@ -129,15 +129,52 @@
       <div class="section-header">
         <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
         <div>
-          <p class="eyebrow">Drag & Drop Game</p>
-          <h2>Input vs Output Devices</h2>
+          <p class="eyebrow">Smart Drag & Drop Game</p>
+          <h2>Input vs Output Generator</h2>
         </div>
       </div>
 
-      <div class="game-card">
+      <div class="game-card quiz-setup-card" id="dragSetup">
+        <div>
+          <p class="eyebrow">Choose Your Sorting Round</p>
+          <h3>1000 drag items per class and level</h3>
+          <p class="setup-copy">Select your class and level. The game builds a 1000-item sorting pool, then gives you 10 random cards.</p>
+        </div>
+
+        <div class="quiz-options">
+          <label class="select-field" for="dragClassSelect">
+            <span>Class</span>
+            <select id="dragClassSelect">
+              <option value="1">Class 1</option>
+              <option value="2">Class 2</option>
+              <option value="3">Class 3</option>
+              <option value="4">Class 4</option>
+              <option value="5">Class 5</option>
+              <option value="6">Class 6</option>
+              <option value="7">Class 7</option>
+              <option value="8">Class 8</option>
+              <option value="9">Class 9</option>
+              <option value="10">Class 10</option>
+            </select>
+          </label>
+
+          <label class="select-field" for="dragLevelSelect">
+            <span>Level</span>
+            <select id="dragLevelSelect">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+
+          <button class="primary-button accent" id="generateDragBtn" type="button">Generate Drag Game</button>
+        </div>
+      </div>
+
+      <div class="game-card hidden" id="dragPlayCard">
         <div class="game-meta">
-          <span>Drag each device into the correct box</span>
-          <span>Score: <strong id="dragScore">0</strong>/5</span>
+          <span id="dragRoundInfo">Drag each item into the correct box</span>
+          <span>Score: <strong id="dragScore">0</strong>/<strong id="dragTotal">10</strong></span>
         </div>
 
         <div class="drag-layout">

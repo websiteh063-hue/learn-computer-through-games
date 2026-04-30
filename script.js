@@ -67,13 +67,57 @@ const quizBank = {
   ]
 };
 
-const devices = [
-  { name: "Keyboard", category: "input", icon: "⌨️" },
-  { name: "Mouse", category: "input", icon: "🖱️" },
-  { name: "Monitor", category: "output", icon: "🖥️" },
-  { name: "Printer", category: "output", icon: "🖨️" },
-  { name: "Speaker", category: "output", icon: "🔊" }
-];
+const dragTopicBank = {
+  easy: [
+    { minClass: 1, name: "Keyboard", category: "input", icon: "⌨️" },
+    { minClass: 1, name: "Mouse", category: "input", icon: "🖱️" },
+    { minClass: 1, name: "Microphone", category: "input", icon: "🎙️" },
+    { minClass: 1, name: "Monitor", category: "output", icon: "🖥️" },
+    { minClass: 1, name: "Speaker", category: "output", icon: "🔊" },
+    { minClass: 2, name: "Printer", category: "output", icon: "🖨️" },
+    { minClass: 2, name: "Scanner", category: "input", icon: "📠" },
+    { minClass: 3, name: "Webcam", category: "input", icon: "📷" },
+    { minClass: 4, name: "Projector", category: "output", icon: "📽️" },
+    { minClass: 5, name: "Touchpad", category: "input", icon: "👆" },
+    { minClass: 6, name: "Headphones", category: "output", icon: "🎧" },
+    { minClass: 7, name: "Barcode Scanner", category: "input", icon: "▥" },
+    { minClass: 8, name: "Plotter", category: "output", icon: "📈" },
+    { minClass: 9, name: "Joystick", category: "input", icon: "🕹️" },
+    { minClass: 10, name: "Braille Display", category: "output", icon: "⠿" }
+  ],
+  medium: [
+    { minClass: 1, name: "Touchscreen Tap", category: "input", icon: "👆" },
+    { minClass: 2, name: "Printed Page", category: "output", icon: "📄" },
+    { minClass: 3, name: "Voice Command", category: "input", icon: "🎙️" },
+    { minClass: 3, name: "Music Playback", category: "output", icon: "🎵" },
+    { minClass: 4, name: "Drawing Tablet", category: "input", icon: "✍️" },
+    { minClass: 4, name: "Screen Message", category: "output", icon: "💬" },
+    { minClass: 5, name: "Game Controller", category: "input", icon: "🎮" },
+    { minClass: 5, name: "LED Display", category: "output", icon: "🔆" },
+    { minClass: 6, name: "Fingerprint Scan", category: "input", icon: "☝️" },
+    { minClass: 6, name: "3D Printed Model", category: "output", icon: "🧊" },
+    { minClass: 7, name: "QR Code Scan", category: "input", icon: "▦" },
+    { minClass: 8, name: "Notification Sound", category: "output", icon: "🔔" },
+    { minClass: 9, name: "Sensor Reading", category: "input", icon: "🌡️" },
+    { minClass: 10, name: "Dashboard Chart", category: "output", icon: "📊" }
+  ],
+  hard: [
+    { minClass: 1, name: "Mouse Click Signal", category: "input", icon: "🖱️" },
+    { minClass: 2, name: "Screen Pixel Color", category: "output", icon: "🟩" },
+    { minClass: 3, name: "Scanned Image Data", category: "input", icon: "🖼️" },
+    { minClass: 4, name: "Audio Wave From Speaker", category: "output", icon: "〰️" },
+    { minClass: 5, name: "Stylus Stroke", category: "input", icon: "🖊️" },
+    { minClass: 6, name: "Printed Report", category: "output", icon: "📑" },
+    { minClass: 7, name: "Biometric Face Scan", category: "input", icon: "🙂" },
+    { minClass: 7, name: "Haptic Vibration", category: "output", icon: "📳" },
+    { minClass: 8, name: "GPS Sensor Data", category: "input", icon: "📍" },
+    { minClass: 8, name: "Projected Slide", category: "output", icon: "📽️" },
+    { minClass: 9, name: "RFID Tag Read", category: "input", icon: "🏷️" },
+    { minClass: 9, name: "Status LED Blink", category: "output", icon: "💡" },
+    { minClass: 10, name: "API Request Payload", category: "input", icon: "📨" },
+    { minClass: 10, name: "API Response Display", category: "output", icon: "📬" }
+  ]
+};
 
 const pictureData = [
   { name: "Chrome", icon: "🌐", choices: ["Chrome", "Folder", "MS Word", "Recycle Bin"] },
@@ -88,6 +132,9 @@ let quizAnswered = false;
 
 let dragScore = 0;
 let placedDevices = new Set();
+let selectedDragClass = 1;
+let selectedDragLevel = "easy";
+let activeDragItems = [];
 
 let pictureIndex = 0;
 let pictureScore = 0;
@@ -219,6 +266,37 @@ function generateQuiz(classNumber, level) {
     ...item,
     choices: shuffleArray(item.choices)
   }));
+}
+
+function buildDragItem(classNumber, level, itemNumber) {
+  const availableTopics = dragTopicBank[level].filter((topic) => topic.minClass <= classNumber);
+  const topic = availableTopics[(itemNumber * 5 + classNumber) % availableTopics.length];
+  const labels = {
+    easy: ["Device", "Computer Item", "Tool", "Basic Item"],
+    medium: ["Action", "Signal", "Computer Task", "Technology Item"],
+    hard: ["Data Flow", "System Event", "Technical Signal", "Digital Process"]
+  };
+  const label = labels[level][(itemNumber + classNumber) % labels[level].length];
+
+  return {
+    id: `drag-${classNumber}-${level}-${itemNumber}`,
+    name: `${topic.icon} ${topic.name} ${label} #${itemNumber + 1}`,
+    category: topic.category
+  };
+}
+
+function buildDragPool(classNumber, level) {
+  const pool = [];
+
+  for (let index = 0; index < 1000; index += 1) {
+    pool.push(buildDragItem(classNumber, level, index));
+  }
+
+  return pool;
+}
+
+function generateDragRound(classNumber, level) {
+  return shuffleArray(buildDragPool(classNumber, level)).slice(0, 10);
 }
 
 function showScreen(screenId) {
@@ -407,10 +485,24 @@ function finishQuiz() {
   launchConfetti();
 }
 
+function openDragSetup() {
+  document.getElementById("dragSetup").classList.remove("hidden");
+  document.getElementById("dragPlayCard").classList.add("hidden");
+  document.getElementById("dragFeedback").textContent = "";
+  showScreen("dragScreen");
+}
+
 function startDragGame() {
   dragScore = 0;
   placedDevices = new Set();
+  selectedDragClass = Number(document.getElementById("dragClassSelect").value);
+  selectedDragLevel = document.getElementById("dragLevelSelect").value;
+  activeDragItems = generateDragRound(selectedDragClass, selectedDragLevel);
+  document.getElementById("dragSetup").classList.add("hidden");
+  document.getElementById("dragPlayCard").classList.remove("hidden");
   document.getElementById("dragScore").textContent = dragScore;
+  document.getElementById("dragTotal").textContent = activeDragItems.length;
+  document.getElementById("dragRoundInfo").textContent = `Class ${selectedDragClass} • ${selectedDragLevel.toUpperCase()} • Sort 10 random cards`;
   document.getElementById("dragFeedback").textContent = "";
   document.getElementById("dragFeedback").className = "feedback";
   document.querySelectorAll(".drop-zone").forEach((zone) => {
@@ -424,18 +516,18 @@ function renderDeviceItems() {
   const deviceItems = document.getElementById("deviceItems");
   deviceItems.innerHTML = "";
 
-  devices.forEach((device) => {
+  activeDragItems.forEach((device) => {
     const item = document.createElement("button");
     item.className = "device-item";
     item.type = "button";
     item.draggable = true;
-    item.dataset.name = device.name;
+    item.dataset.id = device.id;
     item.dataset.category = device.category;
-    item.textContent = `${device.icon} ${device.name}`;
+    item.textContent = device.name;
 
     item.addEventListener("dragstart", (event) => {
       item.classList.add("dragging");
-      event.dataTransfer.setData("text/plain", device.name);
+      event.dataTransfer.setData("text/plain", device.id);
     });
 
     item.addEventListener("dragend", () => {
@@ -461,10 +553,10 @@ function setupDropZones() {
       event.preventDefault();
       zone.classList.remove("over");
 
-      const deviceName = event.dataTransfer.getData("text/plain");
-      const item = document.querySelector(`.device-item[data-name="${deviceName}"]`);
+      const deviceId = event.dataTransfer.getData("text/plain");
+      const item = document.querySelector(`.device-item[data-id="${deviceId}"]`);
 
-      if (!item || placedDevices.has(deviceName)) {
+      if (!item || placedDevices.has(deviceId)) {
         return;
       }
 
@@ -472,23 +564,24 @@ function setupDropZones() {
       const feedback = document.getElementById("dragFeedback");
 
       if (isCorrect) {
-        placedDevices.add(deviceName);
+        placedDevices.add(deviceId);
         dragScore += 1;
         addSessionScore(1);
+        burstAnswerSpark(item);
         item.classList.add("placed");
         item.draggable = false;
         zone.appendChild(item);
         document.getElementById("dragScore").textContent = dragScore;
-        setFeedback(feedback, `Correct! ${deviceName} belongs in ${zone.dataset.category}.`, true);
+        setFeedback(feedback, `Correct! This card belongs in ${zone.dataset.category}.`, true);
 
-        if (dragScore === devices.length) {
+        if (dragScore === activeDragItems.length) {
           window.setTimeout(() => {
             setFeedback(feedback, "Excellent! You sorted every device.", true);
             launchConfetti();
           }, 250);
         }
       } else {
-        setFeedback(feedback, `Try again! ${deviceName} does not belong there.`, false);
+        setFeedback(feedback, "Try again! That card does not belong there.", false);
       }
     });
   });
@@ -578,7 +671,8 @@ function finishPictureGame() {
 document.getElementById("homeLogo").addEventListener("click", () => showScreen("homeScreen"));
 document.getElementById("startQuizBtn").addEventListener("click", openQuizSetup);
 document.getElementById("generateQuizBtn").addEventListener("click", startQuiz);
-document.getElementById("dragGameBtn").addEventListener("click", startDragGame);
+document.getElementById("dragGameBtn").addEventListener("click", openDragSetup);
+document.getElementById("generateDragBtn").addEventListener("click", startDragGame);
 document.getElementById("pictureGameBtn").addEventListener("click", startPictureGame);
 document.getElementById("nextQuizBtn").addEventListener("click", nextQuizQuestion);
 document.getElementById("restartQuizBtn").addEventListener("click", startQuiz);
