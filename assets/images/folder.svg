@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Folder icon">
+  <path d="M12 36a10 10 0 0 1 10-10h30l12 12h42a10 10 0 0 1 10 10v10H12z" fill="#f4b400"/>
+  <rect x="12" y="46" width="104" height="60" rx="10" fill="#fdd663"/>
+  <path d="M12 62h104v34a10 10 0 0 1-10 10H22a10 10 0 0 1-10-10z" fill="#fbbc05"/>
+</svg>

@@ -1,4 +1,4 @@
-// Learn Computer Through Games - all logic works without external libraries.
+// Learn Through Games - all logic works without external libraries.
 const screens = document.querySelectorAll(".screen");
 const bestScoreEl = document.getElementById("bestScore");
 const confettiLayer = document.getElementById("confettiLayer");
@@ -604,7 +604,7 @@ function renderPictureQuestion() {
   pictureAnswered = false;
   document.getElementById("pictureCount").textContent = `Item ${pictureIndex + 1} of ${pictureData.length}`;
   document.getElementById("pictureScore").textContent = pictureScore;
-  document.getElementById("pictureEmoji").textContent = current.icon;
+  document.getElementById("pictureDisplay").innerHTML = `<img src="${current.icon}" alt="${current.name} icon">`;
   document.getElementById("pictureFeedback").textContent = "";
   document.getElementById("pictureFeedback").className = "feedback";
   document.getElementById("nextPictureBtn").disabled = true;
@@ -668,17 +668,496 @@ function finishPictureGame() {
   launchConfetti();
 }
 
+const subjectSettings = {
+  computer: {
+    name: "Computer",
+    minClass: 1,
+    maxClass: 10,
+    dragCategories: [
+      { key: "input", title: "Input", hint: "Cards that send data into a computer" },
+      { key: "output", title: "Output", hint: "Cards that show or play computer results" }
+    ]
+  },
+  science: {
+    name: "Science",
+    minClass: 5,
+    maxClass: 10,
+    dragCategories: [
+      { key: "living", title: "Living", hint: "Living things and life processes" },
+      { key: "nonliving", title: "Non-Living", hint: "Forces, materials, objects, and non-living ideas" }
+    ]
+  },
+  english: {
+    name: "English",
+    minClass: 1,
+    maxClass: 10,
+    dragCategories: [
+      { key: "noun", title: "Noun", hint: "Names of people, places, animals, or things" },
+      { key: "verb", title: "Verb", hint: "Action words" }
+    ]
+  },
+  maths: {
+    name: "Maths",
+    minClass: 1,
+    maxClass: 10,
+    dragCategories: [
+      { key: "even", title: "Even", hint: "Numbers divisible by 2" },
+      { key: "odd", title: "Odd", hint: "Numbers not divisible by 2" }
+    ]
+  },
+  evs: {
+    name: "EVS",
+    minClass: 1,
+    maxClass: 4,
+    dragCategories: [
+      { key: "natural", title: "Natural", hint: "Things found in nature" },
+      { key: "manmade", title: "Man-Made", hint: "Things made by people" }
+    ]
+  }
+};
+
+const subjectQuestionTopics = {
+  computer: {
+    easy: generatedTopicBank.easy,
+    medium: generatedTopicBank.medium,
+    hard: generatedTopicBank.hard
+  },
+  science: {
+    easy: [
+      { minClass: 5, clue: "the process by which plants make food", answer: "Photosynthesis", choices: ["Photosynthesis", "Evaporation", "Condensation", "Friction"] },
+      { minClass: 5, clue: "the force that pulls objects toward Earth", answer: "Gravity", choices: ["Gravity", "Magnetism", "Light", "Sound"] },
+      { minClass: 6, clue: "the basic unit of life", answer: "Cell", choices: ["Cell", "Atom", "Force", "Planet"] },
+      { minClass: 7, clue: "the organ used for breathing", answer: "Lungs", choices: ["Lungs", "Heart", "Stomach", "Brain"] },
+      { minClass: 8, clue: "the change from liquid to gas", answer: "Evaporation", choices: ["Evaporation", "Freezing", "Melting", "Rusting"] },
+      { minClass: 9, clue: "the center of an atom", answer: "Nucleus", choices: ["Nucleus", "Orbit", "Lens", "Root"] },
+      { minClass: 10, clue: "the unit of electric current", answer: "Ampere", choices: ["Ampere", "Volt", "Ohm", "Watt"] }
+    ],
+    medium: [
+      { minClass: 5, clue: "animals that eat only plants", answer: "Herbivores", choices: ["Herbivores", "Carnivores", "Omnivores", "Producers"] },
+      { minClass: 6, clue: "materials that allow heat to pass easily", answer: "Conductors", choices: ["Conductors", "Insulators", "Solvents", "Mixtures"] },
+      { minClass: 7, clue: "the removal of waste from the body", answer: "Excretion", choices: ["Excretion", "Digestion", "Respiration", "Nutrition"] },
+      { minClass: 8, clue: "microbes that cause diseases", answer: "Pathogens", choices: ["Pathogens", "Minerals", "Metals", "Fibres"] },
+      { minClass: 9, clue: "the rate of change of velocity", answer: "Acceleration", choices: ["Acceleration", "Speed", "Force", "Momentum"] },
+      { minClass: 10, clue: "a reaction in which oxidation and reduction both happen", answer: "Redox reaction", choices: ["Redox reaction", "Neutralization", "Sublimation", "Filtration"] }
+    ],
+    hard: [
+      { minClass: 5, clue: "the transfer of pollen to stigma", answer: "Pollination", choices: ["Pollination", "Germination", "Respiration", "Transpiration"] },
+      { minClass: 6, clue: "a mixture with uniform composition", answer: "Homogeneous mixture", choices: ["Homogeneous mixture", "Suspension", "Colloid", "Element"] },
+      { minClass: 7, clue: "the green pigment in leaves", answer: "Chlorophyll", choices: ["Chlorophyll", "Haemoglobin", "Melanin", "Keratin"] },
+      { minClass: 8, clue: "force per unit area", answer: "Pressure", choices: ["Pressure", "Work", "Power", "Energy"] },
+      { minClass: 9, clue: "the SI unit of force", answer: "Newton", choices: ["Newton", "Joule", "Pascal", "Tesla"] },
+      { minClass: 10, clue: "the splitting of white light into colors", answer: "Dispersion", choices: ["Dispersion", "Reflection", "Refraction", "Diffusion"] }
+    ]
+  },
+  english: {
+    easy: [
+      { minClass: 1, clue: "a naming word", answer: "Noun", choices: ["Noun", "Verb", "Adjective", "Adverb"] },
+      { minClass: 1, clue: "an action word", answer: "Verb", choices: ["Verb", "Noun", "Article", "Pronoun"] },
+      { minClass: 2, clue: "a word used instead of a noun", answer: "Pronoun", choices: ["Pronoun", "Verb", "Adverb", "Conjunction"] },
+      { minClass: 3, clue: "a describing word", answer: "Adjective", choices: ["Adjective", "Noun", "Preposition", "Article"] },
+      { minClass: 4, clue: "a sentence that asks something", answer: "Question", choices: ["Question", "Statement", "Command", "Phrase"] }
+    ],
+    medium: [
+      { minClass: 3, clue: "a word that joins words or sentences", answer: "Conjunction", choices: ["Conjunction", "Noun", "Verb", "Article"] },
+      { minClass: 4, clue: "a word that shows relation to place or time", answer: "Preposition", choices: ["Preposition", "Pronoun", "Adverb", "Interjection"] },
+      { minClass: 5, clue: "the past tense of go", answer: "Went", choices: ["Went", "Goed", "Going", "Gone"] },
+      { minClass: 6, clue: "a comparison using like or as", answer: "Simile", choices: ["Simile", "Metaphor", "Idiom", "Clause"] },
+      { minClass: 8, clue: "the main idea of a paragraph", answer: "Topic sentence", choices: ["Topic sentence", "Suffix", "Prefix", "Tense"] }
+    ],
+    hard: [
+      { minClass: 5, clue: "a group of words with subject and verb", answer: "Clause", choices: ["Clause", "Phrase", "Prefix", "Article"] },
+      { minClass: 6, clue: "a direct comparison without like or as", answer: "Metaphor", choices: ["Metaphor", "Simile", "Hyperbole", "Synonym"] },
+      { minClass: 7, clue: "a word opposite in meaning", answer: "Antonym", choices: ["Antonym", "Synonym", "Pronoun", "Adverb"] },
+      { minClass: 9, clue: "the voice where subject receives action", answer: "Passive voice", choices: ["Passive voice", "Active voice", "Direct speech", "Future tense"] },
+      { minClass: 10, clue: "a shortened form of a word or phrase", answer: "Abbreviation", choices: ["Abbreviation", "Alliteration", "Narration", "Punctuation"] }
+    ]
+  },
+  maths: {
+    easy: [
+      { minClass: 1, clue: "the result of 2 + 3", answer: "5", choices: ["5", "4", "6", "7"] },
+      { minClass: 2, clue: "a shape with three sides", answer: "Triangle", choices: ["Triangle", "Square", "Circle", "Cube"] },
+      { minClass: 3, clue: "the result of 6 x 2", answer: "12", choices: ["12", "8", "10", "14"] },
+      { minClass: 4, clue: "the top number in a fraction", answer: "Numerator", choices: ["Numerator", "Denominator", "Factor", "Product"] },
+      { minClass: 5, clue: "a number divisible by 2", answer: "Even number", choices: ["Even number", "Odd number", "Prime number", "Decimal"] }
+    ],
+    medium: [
+      { minClass: 4, clue: "the result of 48 divided by 6", answer: "8", choices: ["8", "6", "7", "9"] },
+      { minClass: 5, clue: "the perimeter of a square with side 5", answer: "20", choices: ["20", "25", "10", "15"] },
+      { minClass: 6, clue: "a number with exactly two factors", answer: "Prime number", choices: ["Prime number", "Composite number", "Even number", "Mixed number"] },
+      { minClass: 7, clue: "the value of 3 squared", answer: "9", choices: ["9", "6", "12", "27"] },
+      { minClass: 8, clue: "the formula for area of rectangle", answer: "Length x Breadth", choices: ["Length x Breadth", "2 x Length", "Side x Side", "Base x Height"] }
+    ],
+    hard: [
+      { minClass: 6, clue: "the HCF of 12 and 18", answer: "6", choices: ["6", "3", "9", "12"] },
+      { minClass: 7, clue: "a triangle with all sides equal", answer: "Equilateral triangle", choices: ["Equilateral triangle", "Scalene triangle", "Right triangle", "Isosceles triangle"] },
+      { minClass: 8, clue: "the square root of 144", answer: "12", choices: ["12", "14", "16", "10"] },
+      { minClass: 9, clue: "the graph of a linear equation is a", answer: "Straight line", choices: ["Straight line", "Circle", "Curve", "Triangle"] },
+      { minClass: 10, clue: "the value of sin 30 degrees", answer: "1/2", choices: ["1/2", "1", "0", "√3/2"] }
+    ]
+  },
+  evs: {
+    easy: [
+      { minClass: 1, clue: "the source of light during the day", answer: "Sun", choices: ["Sun", "Moon", "Star", "Cloud"] },
+      { minClass: 1, clue: "the part of plant under the soil", answer: "Root", choices: ["Root", "Leaf", "Flower", "Stem"] },
+      { minClass: 2, clue: "the thing we drink to stay healthy", answer: "Water", choices: ["Water", "Smoke", "Dust", "Plastic"] },
+      { minClass: 3, clue: "the home of birds", answer: "Nest", choices: ["Nest", "Kennel", "Stable", "Hive"] },
+      { minClass: 4, clue: "the process of keeping surroundings clean", answer: "Sanitation", choices: ["Sanitation", "Pollution", "Crowding", "Wasting"] }
+    ],
+    medium: [
+      { minClass: 1, clue: "things needed by plants to grow", answer: "Air, water, sunlight", choices: ["Air, water, sunlight", "Plastic, smoke, dust", "Paper, stone, glass", "Oil, paint, metal"] },
+      { minClass: 2, clue: "animals that live with humans", answer: "Domestic animals", choices: ["Domestic animals", "Wild animals", "Water animals", "Insects"] },
+      { minClass: 3, clue: "the practice of using less water", answer: "Water conservation", choices: ["Water conservation", "Water pollution", "Water wasting", "Water boiling"] },
+      { minClass: 4, clue: "dirty air, water, or land", answer: "Pollution", choices: ["Pollution", "Nutrition", "Direction", "Rotation"] }
+    ],
+    hard: [
+      { minClass: 2, clue: "the natural home of an animal", answer: "Habitat", choices: ["Habitat", "Shelter", "Market", "Vehicle"] },
+      { minClass: 3, clue: "waste that can rot naturally", answer: "Biodegradable waste", choices: ["Biodegradable waste", "Plastic waste", "Metal waste", "Glass waste"] },
+      { minClass: 4, clue: "the chain that shows who eats whom", answer: "Food chain", choices: ["Food chain", "Traffic chain", "Water cycle", "Family tree"] }
+    ]
+  }
+};
+
+const pictureTopicBank = {
+  computer: [
+    { name: "Chrome", icon: "assets/images/chrome.svg", choices: ["Chrome", "Folder", "MS Word", "Recycle Bin"], minClass: 1 },
+    { name: "MS Word", icon: "assets/images/word.svg", choices: ["MS Word", "Chrome", "Folder", "Recycle Bin"], minClass: 2 },
+    { name: "Folder", icon: "assets/images/folder.svg", choices: ["Folder", "Chrome", "MS Word", "Recycle Bin"], minClass: 1 },
+    { name: "Recycle Bin", icon: "assets/images/recycle-bin.svg", choices: ["Recycle Bin", "Chrome", "Folder", "MS Word"], minClass: 2 }
+  ],
+  science: [
+    { name: "Science", icon: "assets/images/science.svg", choices: ["Science", "Maths", "English", "EVS"], minClass: 5 },
+    { name: "Photosynthesis", icon: "assets/images/science.svg", choices: ["Photosynthesis", "Fraction", "Noun", "Folder"], minClass: 5 },
+    { name: "Gravity", icon: "assets/images/science.svg", choices: ["Gravity", "Verb", "Chrome", "Triangle"], minClass: 6 },
+    { name: "Cell", icon: "assets/images/science.svg", choices: ["Cell", "Sentence", "Printer", "Odd Number"], minClass: 6 }
+  ],
+  english: [
+    { name: "English", icon: "assets/images/book.svg", choices: ["English", "Science", "Maths", "EVS"], minClass: 1 },
+    { name: "Noun", icon: "assets/images/book.svg", choices: ["Noun", "Verb", "Fraction", "Chrome"], minClass: 1 },
+    { name: "Verb", icon: "assets/images/book.svg", choices: ["Verb", "Noun", "Triangle", "Plant"], minClass: 1 },
+    { name: "Adjective", icon: "assets/images/book.svg", choices: ["Adjective", "Gravity", "Folder", "Even Number"], minClass: 3 }
+  ],
+  maths: [
+    { name: "Maths", icon: "assets/images/math.svg", choices: ["Maths", "English", "Science", "EVS"], minClass: 1 },
+    { name: "Addition", icon: "assets/images/math.svg", choices: ["Addition", "Noun", "Chrome", "Leaf"], minClass: 1 },
+    { name: "Triangle", icon: "assets/images/math.svg", choices: ["Triangle", "Circle", "Verb", "Folder"], minClass: 2 },
+    { name: "Fraction", icon: "assets/images/math.svg", choices: ["Fraction", "Sentence", "Gravity", "Recycle Bin"], minClass: 4 }
+  ],
+  evs: [
+    { name: "EVS", icon: "assets/images/evs.svg", choices: ["EVS", "Maths", "English", "Computer"], minClass: 1 },
+    { name: "Plant", icon: "assets/images/evs.svg", choices: ["Plant", "Printer", "Verb", "Fraction"], minClass: 1 },
+    { name: "Water", icon: "assets/images/evs.svg", choices: ["Water", "Chrome", "Triangle", "Noun"], minClass: 1 },
+    { name: "Clean Environment", icon: "assets/images/evs.svg", choices: ["Clean Environment", "MS Word", "Equation", "Adverb"], minClass: 3 }
+  ]
+};
+
+let selectedSubject = "computer";
+let selectedPictureSubject = "computer";
+let selectedPictureClass = 1;
+let selectedPictureLevel = "easy";
+let activePictureData = [];
+
+function buildSubjectQuestion(subject, classNumber, level, questionNumber) {
+  const matchingTopics = subjectQuestionTopics[subject][level].filter((topic) => topic.minClass <= classNumber);
+  const topics = matchingTopics.length ? matchingTopics : subjectQuestionTopics[subject][level];
+  const topic = topics[(questionNumber * 7 + classNumber) % topics.length];
+  const subjectName = subjectSettings[subject].name;
+
+  return {
+    question: `Class ${classNumber} ${subjectName} ${level} #${questionNumber + 1}: Which answer matches ${topic.clue}?`,
+    answer: topic.answer,
+    choices: shuffleArray(topic.choices)
+  };
+}
+
+function generateQuiz(classNumber, level, subject = "computer") {
+  const pool = [];
+
+  for (let index = 0; index < 1000; index += 1) {
+    pool.push(buildSubjectQuestion(subject, classNumber, level, index));
+  }
+
+  return shuffleArray(pool).slice(0, 10);
+}
+
+function buildSubjectDragItem(subject, classNumber, level, itemNumber) {
+  if (subject === "computer") {
+    return buildDragItem(classNumber, level, itemNumber);
+  }
+
+  const examples = {
+    science: {
+      living: ["Plant", "Human", "Bird", "Bacteria", "Fish"],
+      nonliving: ["Gravity", "Rock", "Water", "Magnet", "Light"]
+    },
+    english: {
+      noun: ["Book", "Teacher", "Garden", "River", "Computer"],
+      verb: ["Read", "Write", "Jump", "Think", "Speak"]
+    },
+    maths: {
+      even: ["2", "4", "8", "12", "20"],
+      odd: ["1", "3", "7", "11", "15"]
+    },
+    evs: {
+      natural: ["Tree", "River", "Sun", "Soil", "Bird"],
+      manmade: ["Road", "House", "Bottle", "Car", "Bridge"]
+    }
+  };
+  const categories = Object.keys(examples[subject]);
+  const category = categories[(itemNumber + classNumber) % categories.length];
+  const values = examples[subject][category];
+  const value = values[(itemNumber * 3 + classNumber) % values.length];
+
+  return {
+    id: `drag-${subject}-${classNumber}-${level}-${itemNumber}`,
+    name: `${subjectSettings[subject].name} ${level} #${itemNumber + 1}: ${value}`,
+    category
+  };
+}
+
+function generateDragRound(classNumber, level, subject = "computer") {
+  const pool = [];
+
+  for (let index = 0; index < 1000; index += 1) {
+    pool.push(buildSubjectDragItem(subject, classNumber, level, index));
+  }
+
+  return shuffleArray(pool).slice(0, 10);
+}
+
+function buildPicturePool(subject, classNumber, level) {
+  const topics = pictureTopicBank[subject].filter((topic) => topic.minClass <= classNumber);
+  const pool = [];
+
+  for (let index = 0; index < 1000; index += 1) {
+    const topic = topics[(index * 5 + classNumber) % topics.length];
+    pool.push({
+      ...topic,
+      name: topic.name,
+      choices: shuffleArray(topic.choices),
+      roundLabel: `${subjectSettings[subject].name} ${level} picture #${index + 1}`
+    });
+  }
+
+  return pool;
+}
+
+function generatePictureRound(subject, classNumber, level) {
+  return shuffleArray(buildPicturePool(subject, classNumber, level)).slice(0, 10);
+}
+
+function updateClassOptions(subjectSelectId, classSelectId) {
+  const subject = document.getElementById(subjectSelectId).value;
+  const classSelect = document.getElementById(classSelectId);
+  const settings = subjectSettings[subject];
+  classSelect.innerHTML = "";
+
+  for (let classNumber = settings.minClass; classNumber <= settings.maxClass; classNumber += 1) {
+    const option = document.createElement("option");
+    option.value = classNumber;
+    option.textContent = `Class ${classNumber}`;
+    classSelect.appendChild(option);
+  }
+}
+
+function updateDropZoneLabels(subject) {
+  const [first, second] = subjectSettings[subject].dragCategories;
+  document.getElementById("dropZoneA").dataset.category = first.key;
+  document.getElementById("dropTitleA").textContent = first.title;
+  document.getElementById("dropHintA").textContent = first.hint;
+  document.getElementById("dropZoneB").dataset.category = second.key;
+  document.getElementById("dropTitleB").textContent = second.title;
+  document.getElementById("dropHintB").textContent = second.hint;
+}
+
+function startQuiz() {
+  quizIndex = 0;
+  quizScore = 0;
+  quizAnswered = false;
+  selectedSubject = document.getElementById("subjectSelect").value;
+  selectedClass = Number(document.getElementById("classSelect").value);
+  selectedLevel = document.getElementById("levelSelect").value;
+  activeQuizData = generateQuiz(selectedClass, selectedLevel, selectedSubject);
+  document.getElementById("quizSetup").classList.add("hidden");
+  document.getElementById("quizResult").classList.add("hidden");
+  document.getElementById("quizPlayCard").classList.remove("hidden");
+  showScreen("quizScreen");
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const current = activeQuizData[quizIndex];
+  const quizChoices = document.getElementById("quizChoices");
+  const progress = (quizIndex / activeQuizData.length) * 100;
+  const questionEl = document.getElementById("quizQuestion");
+
+  quizAnswered = false;
+  document.getElementById("quizCount").textContent = `${subjectSettings[selectedSubject].name} • Class ${selectedClass} • ${selectedLevel.toUpperCase()} • Question ${quizIndex + 1} of ${activeQuizData.length}`;
+  document.getElementById("quizScore").textContent = quizScore;
+  document.getElementById("quizProgress").style.width = `${progress}%`;
+  questionEl.textContent = current.question;
+  questionEl.classList.remove("question-pop");
+  void questionEl.offsetWidth;
+  questionEl.classList.add("question-pop");
+  document.getElementById("quizFeedback").textContent = "";
+  document.getElementById("quizFeedback").className = "feedback";
+  document.getElementById("nextQuizBtn").disabled = true;
+  quizChoices.innerHTML = "";
+
+  current.choices.forEach((choice) => {
+    const button = document.createElement("button");
+    button.className = "choice-button";
+    button.type = "button";
+    button.textContent = choice;
+    button.addEventListener("click", () => selectQuizAnswer(button, choice));
+    quizChoices.appendChild(button);
+  });
+}
+
+function finishQuiz() {
+  document.getElementById("quizProgress").style.width = "100%";
+  document.getElementById("quizPlayCard").classList.add("hidden");
+  document.getElementById("quizResult").classList.remove("hidden");
+  document.getElementById("quizResultText").textContent = `${subjectSettings[selectedSubject].name} Class ${selectedClass} ${selectedLevel} result: ${quizScore} out of ${activeQuizData.length}. Generate again for a new quiz.`;
+  launchConfetti();
+}
+
+function startDragGame() {
+  dragScore = 0;
+  placedDevices = new Set();
+  const subject = document.getElementById("dragSubjectSelect").value;
+  selectedDragClass = Number(document.getElementById("dragClassSelect").value);
+  selectedDragLevel = document.getElementById("dragLevelSelect").value;
+  activeDragItems = generateDragRound(selectedDragClass, selectedDragLevel, subject);
+  updateDropZoneLabels(subject);
+  document.getElementById("dragSetup").classList.add("hidden");
+  document.getElementById("dragPlayCard").classList.remove("hidden");
+  document.getElementById("dragScore").textContent = dragScore;
+  document.getElementById("dragTotal").textContent = activeDragItems.length;
+  document.getElementById("dragRoundInfo").textContent = `${subjectSettings[subject].name} • Class ${selectedDragClass} • ${selectedDragLevel.toUpperCase()} • Sort 10 random cards`;
+  document.getElementById("dragFeedback").textContent = "";
+  document.getElementById("dragFeedback").className = "feedback";
+  document.querySelectorAll(".drop-zone").forEach((zone) => {
+    zone.querySelectorAll(".device-item").forEach((item) => item.remove());
+  });
+  renderDeviceItems();
+  showScreen("dragScreen");
+}
+
+function openPictureSetup() {
+  document.getElementById("pictureSetup").classList.remove("hidden");
+  document.getElementById("picturePlayCard").classList.add("hidden");
+  document.getElementById("pictureResult").classList.add("hidden");
+  showScreen("pictureScreen");
+}
+
+function startPictureGame() {
+  pictureIndex = 0;
+  pictureScore = 0;
+  pictureAnswered = false;
+  selectedPictureSubject = document.getElementById("pictureSubjectSelect").value;
+  selectedPictureClass = Number(document.getElementById("pictureClassSelect").value);
+  selectedPictureLevel = document.getElementById("pictureLevelSelect").value;
+  activePictureData = generatePictureRound(selectedPictureSubject, selectedPictureClass, selectedPictureLevel);
+  document.getElementById("pictureSetup").classList.add("hidden");
+  document.getElementById("pictureResult").classList.add("hidden");
+  document.getElementById("picturePlayCard").classList.remove("hidden");
+  showScreen("pictureScreen");
+  renderPictureQuestion();
+}
+
+function renderPictureQuestion() {
+  const current = activePictureData[pictureIndex];
+  const pictureChoices = document.getElementById("pictureChoices");
+  const pictureDisplay = document.getElementById("pictureDisplay");
+
+  pictureAnswered = false;
+  document.getElementById("pictureCount").textContent = `${subjectSettings[selectedPictureSubject].name} • Class ${selectedPictureClass} • ${selectedPictureLevel.toUpperCase()} • Item ${pictureIndex + 1} of ${activePictureData.length}`;
+  document.getElementById("pictureScore").textContent = pictureScore;
+  pictureDisplay.innerHTML = `<img src="${current.icon}" alt="${current.name} icon">`;
+  document.getElementById("pictureFeedback").textContent = "";
+  document.getElementById("pictureFeedback").className = "feedback";
+  document.getElementById("nextPictureBtn").disabled = true;
+  pictureChoices.innerHTML = "";
+
+  current.choices.forEach((choice) => {
+    const button = document.createElement("button");
+    button.className = "choice-button";
+    button.type = "button";
+    button.textContent = choice;
+    button.addEventListener("click", () => selectPictureAnswer(button, choice));
+    pictureChoices.appendChild(button);
+  });
+}
+
+function selectPictureAnswer(button, choice) {
+  if (pictureAnswered) {
+    return;
+  }
+
+  const correctAnswer = activePictureData[pictureIndex].name;
+  const isCorrect = choice === correctAnswer;
+  const feedback = document.getElementById("pictureFeedback");
+
+  pictureAnswered = true;
+  document.querySelectorAll("#pictureChoices .choice-button").forEach((choiceButton) => {
+    choiceButton.disabled = true;
+    if (choiceButton.textContent === correctAnswer) {
+      choiceButton.classList.add("correct");
+    }
+  });
+
+  if (isCorrect) {
+    pictureScore += 1;
+    addSessionScore(1);
+    document.getElementById("pictureScore").textContent = pictureScore;
+    burstAnswerSpark(button);
+    setFeedback(feedback, "Correct picture match!", true);
+  } else {
+    button.classList.add("wrong");
+    setFeedback(feedback, `Wrong! This is ${correctAnswer}.`, false);
+  }
+
+  document.getElementById("nextPictureBtn").disabled = false;
+}
+
+function nextPictureQuestion() {
+  pictureIndex += 1;
+
+  if (pictureIndex >= activePictureData.length) {
+    finishPictureGame();
+    return;
+  }
+
+  renderPictureQuestion();
+}
+
+function finishPictureGame() {
+  document.getElementById("picturePlayCard").classList.add("hidden");
+  document.getElementById("pictureResult").classList.remove("hidden");
+  document.getElementById("pictureResultText").textContent = `${subjectSettings[selectedPictureSubject].name} Class ${selectedPictureClass} ${selectedPictureLevel} result: ${pictureScore} out of ${activePictureData.length}.`;
+  launchConfetti();
+}
+
+updateClassOptions("subjectSelect", "classSelect");
+updateClassOptions("dragSubjectSelect", "dragClassSelect");
+updateClassOptions("pictureSubjectSelect", "pictureClassSelect");
+updateDropZoneLabels("computer");
+
 document.getElementById("homeLogo").addEventListener("click", () => showScreen("homeScreen"));
 document.getElementById("startQuizBtn").addEventListener("click", openQuizSetup);
 document.getElementById("generateQuizBtn").addEventListener("click", startQuiz);
 document.getElementById("dragGameBtn").addEventListener("click", openDragSetup);
 document.getElementById("generateDragBtn").addEventListener("click", startDragGame);
-document.getElementById("pictureGameBtn").addEventListener("click", startPictureGame);
+document.getElementById("pictureGameBtn").addEventListener("click", openPictureSetup);
+document.getElementById("generatePictureBtn").addEventListener("click", startPictureGame);
 document.getElementById("nextQuizBtn").addEventListener("click", nextQuizQuestion);
 document.getElementById("restartQuizBtn").addEventListener("click", startQuiz);
 document.getElementById("resetDragBtn").addEventListener("click", startDragGame);
 document.getElementById("nextPictureBtn").addEventListener("click", nextPictureQuestion);
 document.getElementById("restartPictureBtn").addEventListener("click", startPictureGame);
+document.getElementById("subjectSelect").addEventListener("change", () => updateClassOptions("subjectSelect", "classSelect"));
+document.getElementById("dragSubjectSelect").addEventListener("change", () => updateClassOptions("dragSubjectSelect", "dragClassSelect"));
+document.getElementById("pictureSubjectSelect").addEventListener("change", () => updateClassOptions("pictureSubjectSelect", "pictureClassSelect"));
 
 document.querySelectorAll("[data-screen]").forEach((button) => {
   button.addEventListener("click", () => showScreen(button.dataset.screen));

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learn Computer Through Games 🎮</title>
+  <title>Learn Through Games</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,8 +11,8 @@
 
   <header class="topbar">
     <button class="brand-button" id="homeLogo" type="button" aria-label="Go to homepage">
-      <span class="brand-icon">🎮</span>
-      <span>Learn Computer</span>
+      <span class="brand-icon">LTG</span>
+      <span>Learn Through Games</span>
     </button>
     <div class="leaderboard" aria-live="polite">
       <span>🏆 Best Score</span>
@@ -24,8 +24,8 @@
     <section class="screen home-screen active" id="homeScreen">
       <div class="hero-card">
         <p class="eyebrow">Mini Educational Game Platform</p>
-        <h1>Learn Computer Through Games 🎮</h1>
-        <p class="subtitle">Play, Learn, and Master Computer Basics</p>
+        <h1>Learn Through Games</h1>
+        <p class="subtitle">Play, Learn, and Master School Subjects</p>
 
         <div class="home-actions" aria-label="Choose a game">
           <button class="primary-button" id="startQuizBtn" type="button">Start Quiz</button>
@@ -38,17 +38,17 @@
         <article class="feature-card">
           <span class="feature-icon">🧠</span>
           <h2>Quick Quiz</h2>
-          <p>Answer one computer question at a time and watch your progress grow.</p>
+          <p>Answer fresh questions in Computer, Science, English, Maths, and EVS.</p>
         </article>
         <article class="feature-card">
           <span class="feature-icon">🖱️</span>
-          <h2>Sort Devices</h2>
-          <p>Drag input and output devices into the correct category.</p>
+          <h2>Sort Concepts</h2>
+          <p>Drag generated learning cards into the correct category.</p>
         </article>
         <article class="feature-card">
           <span class="feature-icon">🖼️</span>
           <h2>Picture Match</h2>
-          <p>Recognize common computer icons through playful picture questions.</p>
+          <p>Recognize original-style icons and subject pictures through playful rounds.</p>
         </article>
       </div>
     </section>
@@ -58,7 +58,7 @@
         <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
         <div>
           <p class="eyebrow">Smart Quiz Game</p>
-          <h2>Computer Quiz Generator</h2>
+          <h2>Subject Quiz Generator</h2>
         </div>
       </div>
 
@@ -70,6 +70,17 @@
         </div>
 
         <div class="quiz-options">
+          <label class="select-field" for="subjectSelect">
+            <span>Subject</span>
+            <select id="subjectSelect">
+              <option value="computer">Computer</option>
+              <option value="science">Science (Class 5 to 10)</option>
+              <option value="english">English</option>
+              <option value="maths">Maths</option>
+              <option value="evs">EVS (Class 1 to 4)</option>
+            </select>
+          </label>
+
           <label class="select-field" for="classSelect">
             <span>Class</span>
             <select id="classSelect">
@@ -130,7 +141,7 @@
         <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
         <div>
           <p class="eyebrow">Smart Drag & Drop Game</p>
-          <h2>Input vs Output Generator</h2>
+          <h2>Subject Sorting Generator</h2>
         </div>
       </div>
 
@@ -142,6 +153,17 @@
         </div>
 
         <div class="quiz-options">
+          <label class="select-field" for="dragSubjectSelect">
+            <span>Subject</span>
+            <select id="dragSubjectSelect">
+              <option value="computer">Computer</option>
+              <option value="science">Science (Class 5 to 10)</option>
+              <option value="english">English</option>
+              <option value="maths">Maths</option>
+              <option value="evs">EVS (Class 1 to 4)</option>
+            </select>
+          </label>
+
           <label class="select-field" for="dragClassSelect">
             <span>Class</span>
             <select id="dragClassSelect">
@@ -181,13 +203,13 @@
           <div class="item-bank" id="deviceItems" aria-label="Device items"></div>
 
           <div class="drop-zone-grid">
-            <div class="drop-zone" data-category="input">
-              <h3>Input</h3>
-              <p>Devices that send data to a computer</p>
+            <div class="drop-zone" id="dropZoneA" data-category="input">
+              <h3 id="dropTitleA">Input</h3>
+              <p id="dropHintA">Devices that send data to a computer</p>
             </div>
-            <div class="drop-zone" data-category="output">
-              <h3>Output</h3>
-              <p>Devices that show or play results</p>
+            <div class="drop-zone" id="dropZoneB" data-category="output">
+              <h3 id="dropTitleB">Output</h3>
+              <p id="dropHintB">Devices that show or play results</p>
             </div>
           </div>
         </div>
@@ -202,17 +224,65 @@
         <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
         <div>
           <p class="eyebrow">Picture Recognition Game</p>
-          <h2>Guess the Computer Item</h2>
+          <h2>Subject Picture Generator</h2>
         </div>
       </div>
 
-      <div class="game-card">
+      <div class="game-card quiz-setup-card" id="pictureSetup">
+        <div>
+          <p class="eyebrow">Choose Your Picture Round</p>
+          <h3>1000 picture cards per class and level</h3>
+          <p class="setup-copy">Select your subject, class, and level. The game builds a 1000-picture pool, then gives you 10 random picture questions.</p>
+        </div>
+
+        <div class="quiz-options">
+          <label class="select-field" for="pictureSubjectSelect">
+            <span>Subject</span>
+            <select id="pictureSubjectSelect">
+              <option value="computer">Computer</option>
+              <option value="science">Science (Class 5 to 10)</option>
+              <option value="english">English</option>
+              <option value="maths">Maths</option>
+              <option value="evs">EVS (Class 1 to 4)</option>
+            </select>
+          </label>
+
+          <label class="select-field" for="pictureClassSelect">
+            <span>Class</span>
+            <select id="pictureClassSelect">
+              <option value="1">Class 1</option>
+              <option value="2">Class 2</option>
+              <option value="3">Class 3</option>
+              <option value="4">Class 4</option>
+              <option value="5">Class 5</option>
+              <option value="6">Class 6</option>
+              <option value="7">Class 7</option>
+              <option value="8">Class 8</option>
+              <option value="9">Class 9</option>
+              <option value="10">Class 10</option>
+            </select>
+          </label>
+
+          <label class="select-field" for="pictureLevelSelect">
+            <span>Level</span>
+            <select id="pictureLevelSelect">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+
+          <button class="primary-button warm" id="generatePictureBtn" type="button">Generate Picture Game</button>
+        </div>
+      </div>
+
+      <div class="game-card hidden" id="picturePlayCard">
         <div class="game-meta">
-          <span id="pictureCount">Item 1 of 4</span>
+          <span id="pictureCount">Item 1 of 10</span>
           <span>Score: <strong id="pictureScore">0</strong></span>
         </div>
 
-        <div class="picture-display" id="pictureEmoji">🌐</div>
+        <div class="picture-display" id="pictureDisplay"></div>
         <h3>What is this?</h3>
         <div class="choice-grid" id="pictureChoices"></div>
 

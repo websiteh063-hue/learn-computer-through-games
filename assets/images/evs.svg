@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="EVS icon">
+  <circle cx="64" cy="64" r="54" fill="#dcfce7"/>
+  <path d="M64 96V60" stroke="#166534" stroke-width="8" stroke-linecap="round"/>
+  <path d="M63 62c-24-2-34-18-36-37 20 2 36 11 36 37z" fill="#22c55e"/>
+  <path d="M66 70c24-2 35-18 37-37-21 2-37 11-37 37z" fill="#16a34a"/>
+  <path d="M36 104h56" stroke="#166534" stroke-width="8" stroke-linecap="round"/>
+</svg>

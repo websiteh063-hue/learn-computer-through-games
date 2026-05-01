@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="MS Word icon">
+  <rect x="18" y="16" width="80" height="96" rx="10" fill="#2b579a"/>
+  <rect x="44" y="26" width="66" height="76" rx="8" fill="#41a5ee"/>
+  <path d="M56 44h42v8H56zm0 18h42v8H56zm0 18h28v8H56z" fill="#fff" opacity=".92"/>
+  <path d="M29 42h18l8 31 8-31h17L64 90H48l-9-30-9 30H14z" fill="#fff"/>
+</svg>

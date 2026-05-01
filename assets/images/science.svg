@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Science icon">
+  <path d="M52 18h24v12l-8 12v18l32 44a8 8 0 0 1-7 12H35a8 8 0 0 1-7-12l32-44V42L52 30z" fill="#e0f2fe" stroke="#0284c7" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M45 92h38l-14-20H59z" fill="#18c6b7"/>
+  <circle cx="53" cy="83" r="4" fill="#fff"/>
+  <circle cx="72" cy="96" r="5" fill="#fff"/>
+</svg>

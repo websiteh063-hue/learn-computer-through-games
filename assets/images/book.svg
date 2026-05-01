@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="English book icon">
+  <path d="M18 24h42a16 16 0 0 1 16 16v72a16 16 0 0 0-16-16H18z" fill="#ef4444"/>
+  <path d="M110 24H68a16 16 0 0 0-16 16v72a16 16 0 0 1 16-16h42z" fill="#3b82f6"/>
+  <path d="M32 48h24m-24 16h20m24-16h20m-20 16h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+</svg>
