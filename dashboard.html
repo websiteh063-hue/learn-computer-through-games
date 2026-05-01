@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Learn Through Games</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="dashboard">
+  <div class="toast-zone" id="toastZone" aria-live="polite"></div>
+
+  <header class="topbar">
+    <a class="brand-button" href="index.html" aria-label="Learn Through Games home">
+      <span class="brand-icon">LTG</span>
+      <span>Learn Through Games</span>
+    </a>
+    <nav class="nav-actions" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="game.html">Play</a>
+      <button class="icon-button" id="darkModeToggle" type="button" aria-label="Toggle dark mode">☾</button>
+    </nav>
+  </header>
+
+  <main class="app-shell">
+    <section class="section-heading">
+      <p class="eyebrow">Player Dashboard</p>
+      <h1>Your learning progress</h1>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="dashboard-card">
+        <span>Total XP</span>
+        <strong id="dashXp">0</strong>
+        <div class="xp-track"><div class="xp-fill" id="dashXpFill"></div></div>
+      </article>
+      <article class="dashboard-card">
+        <span>Completed Levels</span>
+        <strong id="dashLevels">0/4</strong>
+      </article>
+      <article class="dashboard-card">
+        <span>Accuracy</span>
+        <strong id="dashAccuracy">0%</strong>
+      </article>
+      <article class="dashboard-card">
+        <span>Current Streak</span>
+        <strong id="dashStreak">0 days</strong>
+      </article>
+    </section>
+
+    <section class="two-column">
+      <div class="panel">
+        <div class="panel-title">
+          <p class="eyebrow">Badges</p>
+          <h2>Earned achievements</h2>
+        </div>
+        <div class="badge-grid" id="dashBadges"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <p class="eyebrow">Local Leaderboard</p>
+          <h2>Top 5 scores</h2>
+        </div>
+        <ol class="leaderboard-list" id="dashLeaderboard"></ol>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
+        <p class="eyebrow">Mission Map</p>
+        <h2>Level status</h2>
+      </div>
+      <div class="level-grid" id="dashLevelGrid"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

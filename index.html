@@ -6,296 +6,103 @@
   <title>Learn Through Games</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-page="home">
   <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+  <div class="toast-zone" id="toastZone" aria-live="polite"></div>
 
   <header class="topbar">
-    <button class="brand-button" id="homeLogo" type="button" aria-label="Go to homepage">
+    <a class="brand-button" href="index.html" aria-label="Learn Through Games home">
       <span class="brand-icon">LTG</span>
       <span>Learn Through Games</span>
-    </button>
-    <div class="leaderboard" aria-live="polite">
-      <span>🏆 Best Score</span>
-      <strong id="bestScore">0</strong>
-    </div>
+    </a>
+    <nav class="nav-actions" aria-label="Main navigation">
+      <a href="game.html">Play</a>
+      <a href="dashboard.html">Dashboard</a>
+      <button class="icon-button" id="darkModeToggle" type="button" aria-label="Toggle dark mode">☾</button>
+    </nav>
   </header>
 
   <main class="app-shell">
-    <section class="screen home-screen active" id="homeScreen">
-      <div class="hero-card">
-        <p class="eyebrow">Mini Educational Game Platform</p>
-        <h1>Learn Through Games</h1>
-        <p class="subtitle">Play, Learn, and Master School Subjects</p>
-
-        <div class="home-actions" aria-label="Choose a game">
-          <button class="primary-button" id="startQuizBtn" type="button">Start Quiz</button>
-          <button class="primary-button accent" id="dragGameBtn" type="button">Drag & Drop Game</button>
-          <button class="primary-button warm" id="pictureGameBtn" type="button">Picture Game</button>
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Story Mode</p>
+        <h1>Help a robot learn computers</h1>
+        <p class="subtitle">Complete missions, earn XP, unlock badges, build a streak, and master computer basics through games.</p>
+        <div class="hero-actions">
+          <a class="primary-button" href="game.html">Start Game</a>
+          <a class="secondary-button" href="dashboard.html">View Dashboard</a>
         </div>
       </div>
-
-      <div class="feature-grid">
-        <article class="feature-card">
-          <span class="feature-icon">🧠</span>
-          <h2>Quick Quiz</h2>
-          <p>Answer fresh questions in Computer, Science, English, Maths, and EVS.</p>
-        </article>
-        <article class="feature-card">
-          <span class="feature-icon">🖱️</span>
-          <h2>Sort Concepts</h2>
-          <p>Drag generated learning cards into the correct category.</p>
-        </article>
-        <article class="feature-card">
-          <span class="feature-icon">🖼️</span>
-          <h2>Picture Match</h2>
-          <p>Recognize original-style icons and subject pictures through playful rounds.</p>
-        </article>
+      <div class="robot-card" aria-label="Robot learning companion">
+        <div class="robot-face">
+          <span class="robot-eye"></span>
+          <span class="robot-eye"></span>
+          <span class="robot-smile"></span>
+        </div>
+        <div class="robot-body">
+          <span>XP</span>
+          <strong id="homeXp">0</strong>
+        </div>
       </div>
     </section>
 
-    <section class="screen game-screen" id="quizScreen">
-      <div class="section-header">
-        <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
-        <div>
-          <p class="eyebrow">Smart Quiz Game</p>
-          <h2>Subject Quiz Generator</h2>
-        </div>
-      </div>
-
-      <div class="game-card quiz-setup-card" id="quizSetup">
-        <div>
-          <p class="eyebrow">Choose Your Quiz</p>
-          <h3>New questions every time</h3>
-          <p class="setup-copy">Select your class and level. The quiz builds a 1000-question pool for that class and level, then gives you 10 random questions.</p>
-        </div>
-
-        <div class="quiz-options">
-          <label class="select-field" for="subjectSelect">
-            <span>Subject</span>
-            <select id="subjectSelect">
-              <option value="computer">Computer</option>
-              <option value="science">Science (Class 5 to 10)</option>
-              <option value="english">English</option>
-              <option value="maths">Maths</option>
-              <option value="evs">EVS (Class 1 to 4)</option>
-            </select>
-          </label>
-
-          <label class="select-field" for="classSelect">
-            <span>Class</span>
-            <select id="classSelect">
-              <option value="1">Class 1</option>
-              <option value="2">Class 2</option>
-              <option value="3">Class 3</option>
-              <option value="4">Class 4</option>
-              <option value="5">Class 5</option>
-              <option value="6">Class 6</option>
-              <option value="7">Class 7</option>
-              <option value="8">Class 8</option>
-              <option value="9">Class 9</option>
-              <option value="10">Class 10</option>
-            </select>
-          </label>
-
-          <label class="select-field" for="levelSelect">
-            <span>Level</span>
-            <select id="levelSelect">
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </label>
-
-          <button class="primary-button" id="generateQuizBtn" type="button">Generate Quiz</button>
-        </div>
-      </div>
-
-      <div class="game-card hidden" id="quizPlayCard">
-        <div class="game-meta">
-          <span id="quizCount">Question 1 of 5</span>
-          <span>Score: <strong id="quizScore">0</strong></span>
-        </div>
-
-        <div class="progress-track" aria-label="Quiz progress">
-          <div class="progress-fill" id="quizProgress"></div>
-        </div>
-
-        <h3 id="quizQuestion">Question text</h3>
-        <div class="choice-grid" id="quizChoices"></div>
-
-        <p class="feedback" id="quizFeedback" aria-live="polite"></p>
-
-        <button class="primary-button next-button" id="nextQuizBtn" type="button" disabled>Next</button>
-      </div>
-
-      <div class="game-card result-card hidden" id="quizResult">
-        <span class="result-icon">🏁</span>
-        <h2>Quiz Complete!</h2>
-        <p id="quizResultText"></p>
-        <button class="primary-button" id="restartQuizBtn" type="button">Restart Quiz</button>
-      </div>
+    <section class="stats-strip" aria-label="Player progress">
+      <article>
+        <span>Total XP</span>
+        <strong id="homeTotalXp">0</strong>
+      </article>
+      <article>
+        <span>Completed Levels</span>
+        <strong id="homeCompleted">0/4</strong>
+      </article>
+      <article>
+        <span>Streak</span>
+        <strong id="homeStreak">0 days</strong>
+      </article>
+      <article>
+        <span>Badges</span>
+        <strong id="homeBadges">0</strong>
+      </article>
     </section>
 
-    <section class="screen game-screen" id="dragScreen">
-      <div class="section-header">
-        <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
-        <div>
-          <p class="eyebrow">Smart Drag & Drop Game</p>
-          <h2>Subject Sorting Generator</h2>
-        </div>
-      </div>
-
-      <div class="game-card quiz-setup-card" id="dragSetup">
-        <div>
-          <p class="eyebrow">Choose Your Sorting Round</p>
-          <h3>1000 drag items per class and level</h3>
-          <p class="setup-copy">Select your class and level. The game builds a 1000-item sorting pool, then gives you 10 random cards.</p>
-        </div>
-
-        <div class="quiz-options">
-          <label class="select-field" for="dragSubjectSelect">
-            <span>Subject</span>
-            <select id="dragSubjectSelect">
-              <option value="computer">Computer</option>
-              <option value="science">Science (Class 5 to 10)</option>
-              <option value="english">English</option>
-              <option value="maths">Maths</option>
-              <option value="evs">EVS (Class 1 to 4)</option>
-            </select>
-          </label>
-
-          <label class="select-field" for="dragClassSelect">
-            <span>Class</span>
-            <select id="dragClassSelect">
-              <option value="1">Class 1</option>
-              <option value="2">Class 2</option>
-              <option value="3">Class 3</option>
-              <option value="4">Class 4</option>
-              <option value="5">Class 5</option>
-              <option value="6">Class 6</option>
-              <option value="7">Class 7</option>
-              <option value="8">Class 8</option>
-              <option value="9">Class 9</option>
-              <option value="10">Class 10</option>
-            </select>
-          </label>
-
-          <label class="select-field" for="dragLevelSelect">
-            <span>Level</span>
-            <select id="dragLevelSelect">
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </label>
-
-          <button class="primary-button accent" id="generateDragBtn" type="button">Generate Drag Game</button>
-        </div>
-      </div>
-
-      <div class="game-card hidden" id="dragPlayCard">
-        <div class="game-meta">
-          <span id="dragRoundInfo">Drag each item into the correct box</span>
-          <span>Score: <strong id="dragScore">0</strong>/<strong id="dragTotal">10</strong></span>
-        </div>
-
-        <div class="drag-layout">
-          <div class="item-bank" id="deviceItems" aria-label="Device items"></div>
-
-          <div class="drop-zone-grid">
-            <div class="drop-zone" id="dropZoneA" data-category="input">
-              <h3 id="dropTitleA">Input</h3>
-              <p id="dropHintA">Devices that send data to a computer</p>
-            </div>
-            <div class="drop-zone" id="dropZoneB" data-category="output">
-              <h3 id="dropTitleB">Output</h3>
-              <p id="dropHintB">Devices that show or play results</p>
-            </div>
-          </div>
-        </div>
-
-        <p class="feedback" id="dragFeedback" aria-live="polite"></p>
-        <button class="primary-button reset-button" id="resetDragBtn" type="button">Reset Game</button>
-      </div>
+    <section class="section-heading">
+      <p class="eyebrow">Learning Path</p>
+      <h2>Four computer missions</h2>
     </section>
 
-    <section class="screen game-screen" id="pictureScreen">
-      <div class="section-header">
-        <button class="ghost-button" data-screen="homeScreen" type="button">← Home</button>
-        <div>
-          <p class="eyebrow">Picture Recognition Game</p>
-          <h2>Subject Picture Generator</h2>
-        </div>
-      </div>
+    <section class="level-grid" id="homeLevelGrid" aria-label="Computer learning levels"></section>
 
-      <div class="game-card quiz-setup-card" id="pictureSetup">
-        <div>
-          <p class="eyebrow">Choose Your Picture Round</p>
-          <h3>1000 picture cards per class and level</h3>
-          <p class="setup-copy">Select your subject, class, and level. The game builds a 1000-picture pool, then gives you 10 random picture questions.</p>
-        </div>
-
-        <div class="quiz-options">
-          <label class="select-field" for="pictureSubjectSelect">
-            <span>Subject</span>
-            <select id="pictureSubjectSelect">
-              <option value="computer">Computer</option>
-              <option value="science">Science (Class 5 to 10)</option>
-              <option value="english">English</option>
-              <option value="maths">Maths</option>
-              <option value="evs">EVS (Class 1 to 4)</option>
-            </select>
-          </label>
-
-          <label class="select-field" for="pictureClassSelect">
-            <span>Class</span>
-            <select id="pictureClassSelect">
-              <option value="1">Class 1</option>
-              <option value="2">Class 2</option>
-              <option value="3">Class 3</option>
-              <option value="4">Class 4</option>
-              <option value="5">Class 5</option>
-              <option value="6">Class 6</option>
-              <option value="7">Class 7</option>
-              <option value="8">Class 8</option>
-              <option value="9">Class 9</option>
-              <option value="10">Class 10</option>
-            </select>
-          </label>
-
-          <label class="select-field" for="pictureLevelSelect">
-            <span>Level</span>
-            <select id="pictureLevelSelect">
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </label>
-
-          <button class="primary-button warm" id="generatePictureBtn" type="button">Generate Picture Game</button>
-        </div>
-      </div>
-
-      <div class="game-card hidden" id="picturePlayCard">
-        <div class="game-meta">
-          <span id="pictureCount">Item 1 of 10</span>
-          <span>Score: <strong id="pictureScore">0</strong></span>
-        </div>
-
-        <div class="picture-display" id="pictureDisplay"></div>
-        <h3>What is this?</h3>
-        <div class="choice-grid" id="pictureChoices"></div>
-
-        <p class="feedback" id="pictureFeedback" aria-live="polite"></p>
-        <button class="primary-button next-button" id="nextPictureBtn" type="button" disabled>Next</button>
-      </div>
-
-      <div class="game-card result-card hidden" id="pictureResult">
-        <span class="result-icon">🎉</span>
-        <h2>Picture Game Complete!</h2>
-        <p id="pictureResultText"></p>
-        <button class="primary-button" id="restartPictureBtn" type="button">Restart Picture Game</button>
-      </div>
+    <section class="game-type-grid" aria-label="Available game types">
+      <article class="feature-card">
+        <span class="feature-icon">?</span>
+        <h3>Normal Quiz</h3>
+        <p>Answer randomized questions with instant explanations.</p>
+      </article>
+      <article class="feature-card">
+        <span class="feature-icon">⏱</span>
+        <h3>Timer Mode</h3>
+        <p>Beat 30 seconds per question and earn faster XP.</p>
+      </article>
+      <article class="feature-card">
+        <span class="feature-icon">↔</span>
+        <h3>Drag & Drop</h3>
+        <p>Sort concepts into matching categories.</p>
+      </article>
+      <article class="feature-card">
+        <span class="feature-icon">▦</span>
+        <h3>Memory Cards</h3>
+        <p>Match computer terms with their meanings.</p>
+      </article>
+      <article class="feature-card">
+        <span class="feature-icon">__</span>
+        <h3>Fill Blanks</h3>
+        <p>Type the missing word and learn by doing.</p>
+      </article>
+      <article class="feature-card">
+        <span class="feature-icon">★</span>
+        <h3>Daily Challenge</h3>
+        <p>Return daily for bonus XP and streak rewards.</p>
+      </article>
     </section>
   </main>
 
