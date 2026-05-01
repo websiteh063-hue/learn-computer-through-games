@@ -343,9 +343,18 @@ function pickPictureQuestions() {
 
 function renderGameSetup() {
   active.subject = params().get("subject") || "computer";
+  if (!subjectConfig[active.subject]) active.subject = "computer";
   active.classId = params().get("class") || String(subjectConfig[active.subject].classes[0]);
+  if (!subjectConfig[active.subject].classes.includes(Number(active.classId))) {
+    active.classId = String(subjectConfig[active.subject].classes[0]);
+  }
   active.level = params().get("level") || "easy";
+  if (!levels.includes(active.level)) active.level = "easy";
   if (active.mode === "daily") chooseDaily();
+  updateGameHeader();
+}
+
+function updateGameHeader() {
   const subject = subjectConfig[active.subject];
   byId("gameBreadcrumb").textContent = `${subject.name} • Class ${active.classId} • ${levelLabels[active.level]}`;
   byId("gameTitle").textContent = `${subject.name} Challenge`;
@@ -365,7 +374,10 @@ function chooseDaily() {
 function startRound() {
   active.type = byId("gameType").value;
   active.mode = byId("gameMode").value;
-  if (active.mode === "daily") chooseDaily();
+  if (active.mode === "daily") {
+    chooseDaily();
+    updateGameHeader();
+  }
   active.questions = active.type === "picture" ? pickPictureQuestions() : pickSessionQuestions();
   active.index = 0;
   active.correct = 0;
@@ -572,7 +584,8 @@ function nextAction() {
 
 function finishRound() {
   clearTimer();
-  const passed = active.correct >= 6 || active.type === "drag" || active.type === "memory";
+  const total = active.type === "memory" ? 5 : active.type === "drag" ? active.dragTotal || 10 : 10;
+  const passed = active.correct >= Math.ceil(total * 0.6) || active.type === "drag" || active.type === "memory";
   if (passed) {
     completeChallenge();
     confetti();
@@ -581,7 +594,7 @@ function finishRound() {
   byId("playScreen").classList.remove("active");
   byId("summaryScreen").classList.add("active");
   byId("summaryTitle").textContent = passed ? "Achievement Unlocked!" : "Try Again";
-  byId("summaryText").textContent = `${subjectConfig[active.subject].name} Class ${active.classId} ${levelLabels[active.level]}: ${active.correct}/10 correct. XP earned: ${active.roundXp}. ${passed ? "Next challenge unlocked!" : "Score 6 or more to unlock the next level."}`;
+  byId("summaryText").textContent = `${subjectConfig[active.subject].name} Class ${active.classId} ${levelLabels[active.level]}: ${active.correct}/${total} correct. XP earned: ${active.roundXp}. ${passed ? "Next challenge unlocked!" : `Score ${Math.ceil(total * 0.6)} or more to unlock the next level.`}`;
   byId("nextChallengeLink").href = `class.html?subject=${active.subject}`;
 }
 
