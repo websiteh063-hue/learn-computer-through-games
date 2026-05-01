@@ -4,6 +4,8 @@ const todayKey = new Date().toISOString().slice(0, 10);
 const levels = ["easy", "medium", "hard"];
 const levelLabels = { easy: "Easy", medium: "Medium", hard: "Hard" };
 const levelCounts = { easy: 300, medium: 400, hard: 300 };
+const virtualQuestionTotalPerSubject = 100000;
+const difficultyWeights = { easy: 0.3, medium: 0.4, hard: 0.3 };
 
 const subjectConfig = {
   science: { name: "Science", icon: "🧪", classes: [5, 6, 7, 8, 9, 10], badge: "Science Explorer", color: "blue" },
@@ -278,19 +280,48 @@ function getBank(subject, classId, level) {
   return bank || questionData.subjects.computer.classes["1"].easy;
 }
 
+function virtualCountFor(subject, level) {
+  return Math.floor((virtualQuestionTotalPerSubject * difficultyWeights[level]) / subjectConfig[subject].classes.length);
+}
+
+function uniqueRandomIndexes(max, count) {
+  const indexes = new Set();
+  while (indexes.size < count && indexes.size < max) {
+    indexes.add(Math.floor(Math.random() * max));
+  }
+  return [...indexes];
+}
+
+function buildVirtualQuestion(subject, classId, level, virtualIndex) {
+  const seedBank = getBank(subject, classId, level);
+  const seed = seedBank[virtualIndex % seedBank.length];
+  const subjectName = subjectConfig[subject].name;
+  const variantPrompts = [
+    `Class ${classId} ${subjectName} ${levelLabels[level]} practice #${virtualIndex + 1}: ${seed.question}`,
+    `Class ${classId} ${subjectName} challenge #${virtualIndex + 1}: Choose the correct answer. ${seed.question}`,
+    `Knowledge Champion round #${virtualIndex + 1}: ${seed.question}`,
+    `${subjectName} skill check #${virtualIndex + 1}: ${seed.question}`
+  ];
+
+  return {
+    ...seed,
+    id: `${subject}-${classId}-${level}-virtual-${virtualIndex + 1}`,
+    question: variantPrompts[virtualIndex % variantPrompts.length],
+    options: shuffle(seed.options)
+  };
+}
+
 function pickSessionQuestions() {
-  const bank = getBank(active.subject, active.classId, active.level);
-  return shuffle(bank).slice(0, 10).map((item) => ({
-    ...item,
-    options: shuffle(item.options)
-  }));
+  const count = virtualCountFor(active.subject, active.level);
+  return uniqueRandomIndexes(count, 10).map((index) => buildVirtualQuestion(active.subject, active.classId, active.level, index));
 }
 
 function pickPictureQuestions() {
+  const count = virtualCountFor(active.subject, active.level);
+  const virtualSelected = uniqueRandomIndexes(count, 80).map((index) => buildVirtualQuestion(active.subject, active.classId, active.level, index));
   const classData = questionData.subjects[active.subject]?.classes?.[String(active.classId)];
-  const selected = classData ? [...classData[active.level]] : getBank(active.subject, active.classId, active.level);
-  const fallback = classData ? levels.flatMap((level) => classData[level]) : selected;
-  const candidates = shuffle([...selected, ...fallback]);
+  const fallback = classData ? levels.flatMap((level) => classData[level]) : getBank(active.subject, active.classId, active.level);
+  const candidates = shuffle([...virtualSelected, ...fallback]);
   const picked = [];
   const usedAnswers = new Set();
 
