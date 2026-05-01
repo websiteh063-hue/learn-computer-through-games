@@ -218,6 +218,23 @@ let timeLeft = 30;
 let selectedMemory = [];
 let matchedMemory = 0;
 
+const pictureTopics = [
+  { name: "Chrome", icon: "assets/images/chrome.svg", choices: ["Chrome", "Folder", "MS Word", "Recycle Bin"], explain: "Chrome is a web browser used to open websites." },
+  { name: "MS Word", icon: "assets/images/word.svg", choices: ["MS Word", "Chrome", "Folder", "Paint"], explain: "MS Word is document software used for typing and formatting text." },
+  { name: "Folder", icon: "assets/images/folder.svg", choices: ["Folder", "Recycle Bin", "Chrome", "CPU"], explain: "A folder stores and organizes files." },
+  { name: "Recycle Bin", icon: "assets/images/recycle-bin.svg", choices: ["Recycle Bin", "Folder", "MS Word", "Browser"], explain: "Recycle Bin stores deleted files before permanent removal." },
+  { name: "CPU", icon: "assets/images/cpu.svg", choices: ["CPU", "Monitor", "Keyboard", "Mouse"], explain: "The CPU processes instructions and is called the brain of the computer." },
+  { name: "Monitor", icon: "assets/images/monitor.svg", choices: ["Monitor", "Printer", "Keyboard", "Speaker"], explain: "A monitor shows visual output from the computer." },
+  { name: "Keyboard", icon: "assets/images/keyboard.svg", choices: ["Keyboard", "Mouse", "Monitor", "Printer"], explain: "A keyboard is used to type letters, numbers, and commands." },
+  { name: "Mouse", icon: "assets/images/mouse.svg", choices: ["Mouse", "Keyboard", "Speaker", "Scanner"], explain: "A mouse controls the pointer and selects items." },
+  { name: "Printer", icon: "assets/images/printer.svg", choices: ["Printer", "Monitor", "CPU", "Folder"], explain: "A printer creates paper output from computer data." },
+  { name: "Speaker", icon: "assets/images/speaker.svg", choices: ["Speaker", "Microphone", "Keyboard", "Chrome"], explain: "A speaker gives sound output." },
+  { name: "Browser", icon: "assets/images/browser.svg", choices: ["Browser", "Folder", "Printer", "CPU"], explain: "A browser is software used to visit websites." },
+  { name: "Internet", icon: "assets/images/internet.svg", choices: ["Internet", "MS Word", "Recycle Bin", "Mouse"], explain: "The internet is a worldwide network of connected computers." },
+  { name: "Password", icon: "assets/images/password.svg", choices: ["Password", "Printer", "Folder", "Speaker"], explain: "A password protects accounts and private information." },
+  { name: "Antivirus", icon: "assets/images/antivirus.svg", choices: ["Antivirus", "Chrome", "Keyboard", "Monitor"], explain: "Antivirus software helps protect a computer from harmful programs." }
+];
+
 function defaultState() {
   return {
     xp: 0,
@@ -502,6 +519,7 @@ function startRound() {
 
   if (currentType === "quiz") roundItems = shuffle(currentLevel.questions);
   if (currentType === "drag") roundItems = shuffle(currentLevel.drag);
+  if (currentType === "picture") roundItems = generatePictureRecognitionPool(currentLevel.id);
   if (currentType === "memory") roundItems = shuffle(currentLevel.memory);
   if (currentType === "fill") roundItems = shuffle(currentLevel.fills);
 
@@ -519,6 +537,7 @@ function renderCurrentGame() {
 
   if (currentType === "quiz") renderQuiz();
   if (currentType === "drag") renderDrag();
+  if (currentType === "picture") renderPictureRecognition();
   if (currentType === "memory") renderMemory();
   if (currentType === "fill") renderFill();
 }
@@ -554,6 +573,66 @@ function answerQuiz(button, choice, item) {
   document.querySelectorAll(".choice-button").forEach((btn) => {
     btn.disabled = true;
     if (btn.textContent === item.answer) btn.classList.add("correct");
+  });
+  if (button && !correct) button.classList.add("wrong");
+  recordAnswer(correct);
+  playSound(correct);
+  showFeedback(correct, `${correct ? "Correct!" : "Wrong!"} ${item.explain}`);
+  byId("nextActionBtn").textContent = currentIndex === roundItems.length - 1 ? "Finish" : "Next";
+  byId("nextActionBtn").classList.remove("hidden");
+}
+
+function generatePictureRecognitionPool(levelId) {
+  const generated = [];
+  for (let index = 0; index < 1000; index += 1) {
+    const topic = pictureTopics[(index * 5 + levelId) % pictureTopics.length];
+    const distractors = pictureTopics
+      .filter((item) => item.name !== topic.name)
+      .map((item) => item.name);
+    generated.push({
+      ...topic,
+      id: `picture-${levelId}-${index}`,
+      question: `Picture card #${index + 1}: What computer item is shown?`,
+      choices: shuffle([topic.name, ...shuffle(distractors).slice(0, 3)])
+    });
+  }
+  const picked = [];
+  const usedNames = new Set();
+  shuffle(generated).forEach((card) => {
+    if (picked.length >= 10) return;
+    if (usedNames.has(card.name)) return;
+    picked.push(card);
+    usedNames.add(card.name);
+  });
+  return picked;
+}
+
+function renderPictureRecognition() {
+  const item = roundItems[currentIndex];
+  byId("roundLabel").textContent = `${currentModeLabel()} • Picture ${currentIndex + 1} of ${roundItems.length}`;
+  byId("gameArea").innerHTML = `
+    <h2 class="question-title">${item.question}</h2>
+    <div class="picture-display"><img src="${item.icon}" alt="${item.name} icon"></div>
+    <div class="picture-choice-grid" id="pictureChoiceGrid"></div>
+  `;
+  const grid = byId("pictureChoiceGrid");
+  item.choices.forEach((choice) => {
+    const button = document.createElement("button");
+    button.className = "choice-button";
+    button.type = "button";
+    button.textContent = choice;
+    button.addEventListener("click", () => answerPicture(button, choice, item));
+    grid.appendChild(button);
+  });
+  startTimerIfNeeded(() => answerPicture(null, "", item));
+}
+
+function answerPicture(button, choice, item) {
+  clearTimer();
+  const correct = choice === item.name;
+  document.querySelectorAll(".choice-button").forEach((btn) => {
+    btn.disabled = true;
+    if (btn.textContent === item.name) btn.classList.add("correct");
   });
   if (button && !correct) button.classList.add("wrong");
   recordAnswer(correct);

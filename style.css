@@ -565,7 +565,8 @@ body.dark .robot-card {
 
 .choice-grid,
 .drop-zone-grid,
-.memory-grid {
+.memory-grid,
+.picture-choice-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
@@ -685,6 +686,27 @@ body.dark .drop-zone {
 .memory-card.flipped {
   color: var(--ink);
   background: var(--panel-solid);
+}
+
+.picture-display {
+  width: min(220px, 70vw);
+  height: min(220px, 70vw);
+  margin: 20px auto;
+  display: grid;
+  place-items: center;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ffffff, #dbeafe);
+  box-shadow: inset 0 0 0 8px rgba(37, 99, 235, 0.08), var(--small-shadow);
+}
+
+body.dark .picture-display {
+  background: linear-gradient(135deg, #0f172a, #312e81);
+}
+
+.picture-display img {
+  width: 74%;
+  height: 74%;
+  object-fit: contain;
 }
 
 .fill-box {
