@@ -3,95 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Play - Learn Through Games</title>
+  <title>Game - Learn Through Games</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="game">
   <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
   <div class="toast-zone" id="toastZone" aria-live="polite"></div>
-
   <header class="topbar">
-    <a class="brand-button" href="index.html" aria-label="Learn Through Games home">
-      <span class="brand-icon">LTG</span>
-      <span>Learn Through Games</span>
-    </a>
-    <nav class="nav-actions" aria-label="Main navigation">
-      <a href="index.html">Home</a>
+    <a class="brand-button" href="index.html"><span class="brand-icon">LTG</span><span>Learn Through Games</span></a>
+    <nav class="nav-actions">
+      <a href="subjects.html">Subjects</a>
       <a href="dashboard.html">Dashboard</a>
-      <button class="icon-button" id="darkModeToggle" type="button" aria-label="Toggle dark mode">☾</button>
+      <button class="icon-button" id="darkModeToggle" type="button">☾</button>
     </nav>
   </header>
-
   <main class="app-shell">
     <section class="game-hud">
       <div>
-        <p class="eyebrow">Robot Mission Control</p>
-        <h1 id="gameTitle">Choose a mission</h1>
+        <p class="eyebrow" id="gameBreadcrumb">Challenge</p>
+        <h1 id="gameTitle">Loading...</h1>
       </div>
       <div class="hud-stats">
-        <div>
-          <span>Total XP</span>
-          <strong id="hudXp">0</strong>
-        </div>
-        <div>
-          <span>Streak</span>
-          <strong id="hudStreak">0</strong>
-        </div>
+        <div><span>Total XP</span><strong id="hudXp">0</strong></div>
+        <div><span>Streak</span><strong id="hudStreak">0</strong></div>
       </div>
     </section>
 
-    <section class="screen active" id="missionScreen">
-      <div class="panel">
-        <div class="panel-title">
-          <p class="eyebrow">Learning Path</p>
-          <h2>Select a level</h2>
+    <section class="panel" id="setupPanel">
+      <div class="story-card">
+        <span class="story-icon">🏆</span>
+        <div>
+          <p class="eyebrow">Story Mode</p>
+          <h2>Become a Knowledge Champion</h2>
+          <p id="missionText">Each subject is a mission, each class is a level, and each difficulty is a challenge.</p>
         </div>
-        <div class="level-grid" id="gameLevelGrid"></div>
       </div>
-    </section>
-
-    <section class="screen" id="setupScreen">
-      <div class="panel">
-        <button class="ghost-button" id="backToLevelsBtn" type="button">← Levels</button>
-        <div class="story-card">
-          <span class="story-robot">🤖</span>
-          <div>
-            <p class="eyebrow">Story Mode</p>
-            <h2 id="setupLevelTitle">Mission</h2>
-            <p id="setupStory">Help the robot learn.</p>
-          </div>
-        </div>
-
-        <div class="control-grid">
-          <label class="select-field" for="gameMode">
-            <span>Mode</span>
-            <select id="gameMode">
-              <option value="normal">Normal Quiz</option>
-              <option value="timer">Timer Mode</option>
-              <option value="daily">Daily Challenge</option>
-            </select>
-          </label>
-          <label class="select-field" for="gameType">
-            <span>Game Type</span>
-            <select id="gameType">
-              <option value="quiz">Quiz</option>
-              <option value="drag">Drag & Drop</option>
-              <option value="picture">Picture Recognition</option>
-              <option value="memory">Memory Cards</option>
-              <option value="fill">Fill in the Blanks</option>
-            </select>
-          </label>
-          <button class="primary-button" id="startRoundBtn" type="button">Start Game</button>
-        </div>
+      <div class="control-grid">
+        <label class="select-field"><span>Game Type</span><select id="gameType">
+          <option value="quiz">Quiz Mode</option>
+          <option value="picture">Picture Recognition</option>
+          <option value="drag">Drag & Drop Matching</option>
+          <option value="memory">Memory Card Game</option>
+          <option value="fill">Fill in the Blanks</option>
+        </select></label>
+        <label class="select-field"><span>Mode</span><select id="gameMode">
+          <option value="normal">Normal Quiz</option>
+          <option value="timer">Timer Mode</option>
+          <option value="daily">Daily Challenge</option>
+        </select></label>
+        <button class="primary-button" id="startRoundBtn" type="button">Start Game</button>
       </div>
     </section>
 
     <section class="screen" id="playScreen">
       <div class="game-card">
-        <div class="game-meta">
-          <span id="roundLabel">Question 1 of 5</span>
-          <span>Round XP: <strong id="roundXp">0</strong></span>
-        </div>
+        <div class="game-meta"><span id="roundLabel">Question 1 of 10</span><span>Round XP: <strong id="roundXp">0</strong></span></div>
         <div class="xp-track"><div class="xp-fill" id="roundProgress"></div></div>
         <div class="timer-pill hidden" id="timerPill">30s</div>
         <div id="gameArea"></div>
@@ -103,17 +69,16 @@
     <section class="screen" id="summaryScreen">
       <div class="result-card game-card">
         <span class="result-icon">🏁</span>
-        <h2 id="summaryTitle">Round Complete</h2>
+        <h2 id="summaryTitle">Challenge Complete</h2>
         <p id="summaryText"></p>
         <div class="summary-actions">
           <button class="primary-button" id="replayBtn" type="button">Replay</button>
-          <button class="secondary-button" id="nextLevelBtn" type="button">Next Level</button>
+          <a class="secondary-button" id="nextChallengeLink" href="subjects.html">Next Challenge</a>
           <a class="secondary-button" href="dashboard.html">Dashboard</a>
         </div>
       </div>
     </section>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,251 +1,47 @@
-// Learn Through Games - static gamified learning platform for GitHub Pages.
-const STORAGE_KEY = "ltg-player-v1";
+// Learn Through Games - GitHub Pages friendly gamified learning engine.
+const STORAGE_KEY = "ltg-platform-v2";
 const todayKey = new Date().toISOString().slice(0, 10);
+const levels = ["easy", "medium", "hard"];
+const levelLabels = { easy: "Easy", medium: "Medium", hard: "Hard" };
+const levelCounts = { easy: 300, medium: 400, hard: 300 };
 
-const levels = [
-  {
-    id: 1,
-    title: "Basics of Computer",
-    mission: "Robo just woke up and needs to learn what a computer is.",
-    icon: "L1",
-    questions: [
-      {
-        q: "What is the brain of a computer?",
-        answer: "CPU",
-        choices: ["CPU", "Mouse", "Speaker", "Printer"],
-        explain: "The CPU is called the brain because it processes instructions."
-      },
-      {
-        q: "Which part displays text and pictures?",
-        answer: "Monitor",
-        choices: ["Monitor", "Keyboard", "Mouse", "Scanner"],
-        explain: "A monitor is an output device that shows information on screen."
-      },
-      {
-        q: "What do we use to type letters and numbers?",
-        answer: "Keyboard",
-        choices: ["Keyboard", "Printer", "Speaker", "Webcam"],
-        explain: "A keyboard is an input device used to enter text and numbers."
-      },
-      {
-        q: "Which device helps move the pointer?",
-        answer: "Mouse",
-        choices: ["Mouse", "CPU", "Monitor", "Printer"],
-        explain: "A mouse controls the pointer and helps select items."
-      },
-      {
-        q: "Which part stores files permanently?",
-        answer: "Storage",
-        choices: ["Storage", "Speaker", "Monitor", "Keyboard"],
-        explain: "Storage keeps files even after the computer is switched off."
-      }
-    ],
-    drag: [
-      ["CPU", "Computer Part"], ["Monitor", "Computer Part"], ["Keyboard", "Computer Part"],
-      ["Mouse", "Computer Part"], ["Chair", "Not a Computer Part"], ["Pencil", "Not a Computer Part"]
-    ],
-    memory: [["CPU", "Brain"], ["Monitor", "Screen"], ["Keyboard", "Typing"], ["Mouse", "Pointer"]],
-    fills: [
-      ["The ____ is the brain of the computer.", "CPU", "The CPU processes instructions."],
-      ["A ____ shows text and images.", "Monitor", "A monitor displays computer output."],
-      ["A ____ is used for typing.", "Keyboard", "A keyboard enters letters and numbers."]
-    ]
-  },
-  {
-    id: 2,
-    title: "Input/Output Devices",
-    mission: "Robo must sort signals coming into and going out of the computer.",
-    icon: "L2",
-    questions: [
-      {
-        q: "Which device is an input device?",
-        answer: "Keyboard",
-        choices: ["Keyboard", "Monitor", "Speaker", "Printer"],
-        explain: "A keyboard sends data into a computer, so it is an input device."
-      },
-      {
-        q: "Which device is an output device?",
-        answer: "Printer",
-        choices: ["Printer", "Mouse", "Keyboard", "Scanner"],
-        explain: "A printer gives output by printing information on paper."
-      },
-      {
-        q: "Which device records your voice?",
-        answer: "Microphone",
-        choices: ["Microphone", "Speaker", "Monitor", "Printer"],
-        explain: "A microphone takes sound input into the computer."
-      },
-      {
-        q: "Which device plays sound?",
-        answer: "Speaker",
-        choices: ["Speaker", "Mouse", "Scanner", "Keyboard"],
-        explain: "A speaker gives sound output from the computer."
-      },
-      {
-        q: "Which device can scan paper into the computer?",
-        answer: "Scanner",
-        choices: ["Scanner", "Monitor", "Speaker", "Printer"],
-        explain: "A scanner captures paper images as computer input."
-      }
-    ],
-    drag: [
-      ["Keyboard", "Input"], ["Mouse", "Input"], ["Scanner", "Input"], ["Microphone", "Input"],
-      ["Monitor", "Output"], ["Printer", "Output"], ["Speaker", "Output"], ["Projector", "Output"]
-    ],
-    memory: [["Keyboard", "Input"], ["Printer", "Output"], ["Microphone", "Input"], ["Speaker", "Output"]],
-    fills: [
-      ["A keyboard is an ____ device.", "Input", "It sends typed data into the computer."],
-      ["A monitor is an ____ device.", "Output", "It shows results from the computer."],
-      ["A speaker gives sound ____.", "Output", "Speakers play sound from the computer."]
-    ]
-  },
-  {
-    id: 3,
-    title: "Software Types",
-    mission: "Robo can see apps now, but must learn what each type does.",
-    icon: "L3",
-    questions: [
-      {
-        q: "Which software helps run the computer?",
-        answer: "Operating System",
-        choices: ["Operating System", "Mouse", "Printer", "Speaker"],
-        explain: "An operating system manages hardware and other software."
-      },
-      {
-        q: "Which is an example of a browser?",
-        answer: "Chrome",
-        choices: ["Chrome", "Keyboard", "Monitor", "Folder"],
-        explain: "Chrome is browser software used to visit websites."
-      },
-      {
-        q: "Which software is used to write documents?",
-        answer: "MS Word",
-        choices: ["MS Word", "Paint", "Chrome", "Recycle Bin"],
-        explain: "MS Word is application software used for documents."
-      },
-      {
-        q: "Which software helps protect from viruses?",
-        answer: "Antivirus",
-        choices: ["Antivirus", "Calculator", "Paint", "Notepad"],
-        explain: "Antivirus software detects and removes harmful programs."
-      },
-      {
-        q: "Which software is used for drawing?",
-        answer: "Paint",
-        choices: ["Paint", "Chrome", "Windows", "Printer"],
-        explain: "Paint is an application used to draw simple pictures."
-      }
-    ],
-    drag: [
-      ["Windows", "System Software"], ["Linux", "System Software"], ["Android", "System Software"],
-      ["Chrome", "Application Software"], ["MS Word", "Application Software"], ["Paint", "Application Software"]
-    ],
-    memory: [["Windows", "Operating System"], ["Chrome", "Browser"], ["MS Word", "Documents"], ["Antivirus", "Protection"]],
-    fills: [
-      ["Chrome is a web ____.", "Browser", "A browser opens websites."],
-      ["Windows is an operating ____.", "System", "An operating system manages the computer."],
-      ["Antivirus software protects against ____.", "Viruses", "It helps detect harmful programs."]
-    ]
-  },
-  {
-    id: 4,
-    title: "Internet Basics",
-    mission: "Robo is ready to connect safely to the online world.",
-    icon: "L4",
-    questions: [
-      {
-        q: "What is the internet?",
-        answer: "A worldwide network",
-        choices: ["A worldwide network", "A keyboard", "A printer", "A folder"],
-        explain: "The internet connects computers and devices around the world."
-      },
-      {
-        q: "What does URL help us find?",
-        answer: "A web address",
-        choices: ["A web address", "A power cable", "A keyboard key", "A speaker"],
-        explain: "A URL is the address of a web page or resource."
-      },
-      {
-        q: "Which is safer for websites?",
-        answer: "HTTPS",
-        choices: ["HTTPS", "HTP", "CPU", "PNG"],
-        explain: "HTTPS helps protect data sent between your browser and a website."
-      },
-      {
-        q: "Which word means fake messages trying to steal passwords?",
-        answer: "Phishing",
-        choices: ["Phishing", "Printing", "Painting", "Formatting"],
-        explain: "Phishing tricks people into sharing private information."
-      },
-      {
-        q: "Which tool searches websites?",
-        answer: "Search engine",
-        choices: ["Search engine", "Scanner", "Speaker", "Folder"],
-        explain: "A search engine helps find information on the web."
-      }
-    ],
-    drag: [
-      ["HTTPS", "Safe Internet"], ["Strong Password", "Safe Internet"], ["Search Engine", "Internet Tool"],
-      ["Browser", "Internet Tool"], ["Phishing", "Online Danger"], ["Unknown Link", "Online Danger"]
-    ],
-    memory: [["URL", "Web Address"], ["HTTPS", "Secure Website"], ["Phishing", "Fake Message"], ["Browser", "Opens Websites"]],
-    fills: [
-      ["A ____ opens websites.", "Browser", "A browser lets us visit websites."],
-      ["HTTPS is safer than ____.", "HTTP", "HTTPS adds protection for web traffic."],
-      ["A fake password-stealing message is called ____.", "Phishing", "Phishing is an online trick."]
-    ]
-  }
-];
+const subjectConfig = {
+  science: { name: "Science", icon: "🧪", classes: [5, 6, 7, 8, 9, 10], badge: "Science Explorer", color: "blue" },
+  maths: { name: "Maths", icon: "➗", classes: [5, 6, 7, 8, 9, 10], badge: "Math Master", color: "orange" },
+  english: { name: "English", icon: "📚", classes: [5, 6, 7, 8, 9, 10], badge: "English Pro", color: "purple" },
+  evs: { name: "EVS", icon: "🌱", classes: [1, 2, 3, 4], badge: "EVS Champ", color: "green" },
+  computer: { name: "Computer", icon: "💻", classes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], badge: "Computer Genius", color: "blue" }
+};
 
-const badges = [
-  { id: "beginner", name: "Beginner", rule: (state) => state.completedLevels.includes(1) },
-  { id: "keyboard-master", name: "Keyboard Master", rule: (state) => state.completedLevels.includes(2) },
-  { id: "software-scout", name: "Software Scout", rule: (state) => state.completedLevels.includes(3) },
-  { id: "computer-genius", name: "Computer Genius", rule: (state) => state.completedLevels.length >= levels.length },
-  { id: "streak-star", name: "Streak Star", rule: (state) => state.streak >= 3 }
-];
-
+let questionData = null;
 let state = loadState();
-let currentLevel = null;
-let currentMode = "normal";
-let currentType = "quiz";
-let roundItems = [];
-let currentIndex = 0;
-let roundXp = 0;
-let roundCorrect = 0;
-let timer = null;
-let timeLeft = 30;
-let selectedMemory = [];
-let matchedMemory = 0;
-
-const pictureTopics = [
-  { name: "Chrome", icon: "assets/images/chrome.svg", choices: ["Chrome", "Folder", "MS Word", "Recycle Bin"], explain: "Chrome is a web browser used to open websites." },
-  { name: "MS Word", icon: "assets/images/word.svg", choices: ["MS Word", "Chrome", "Folder", "Paint"], explain: "MS Word is document software used for typing and formatting text." },
-  { name: "Folder", icon: "assets/images/folder.svg", choices: ["Folder", "Recycle Bin", "Chrome", "CPU"], explain: "A folder stores and organizes files." },
-  { name: "Recycle Bin", icon: "assets/images/recycle-bin.svg", choices: ["Recycle Bin", "Folder", "MS Word", "Browser"], explain: "Recycle Bin stores deleted files before permanent removal." },
-  { name: "CPU", icon: "assets/images/cpu.svg", choices: ["CPU", "Monitor", "Keyboard", "Mouse"], explain: "The CPU processes instructions and is called the brain of the computer." },
-  { name: "Monitor", icon: "assets/images/monitor.svg", choices: ["Monitor", "Printer", "Keyboard", "Speaker"], explain: "A monitor shows visual output from the computer." },
-  { name: "Keyboard", icon: "assets/images/keyboard.svg", choices: ["Keyboard", "Mouse", "Monitor", "Printer"], explain: "A keyboard is used to type letters, numbers, and commands." },
-  { name: "Mouse", icon: "assets/images/mouse.svg", choices: ["Mouse", "Keyboard", "Speaker", "Scanner"], explain: "A mouse controls the pointer and selects items." },
-  { name: "Printer", icon: "assets/images/printer.svg", choices: ["Printer", "Monitor", "CPU", "Folder"], explain: "A printer creates paper output from computer data." },
-  { name: "Speaker", icon: "assets/images/speaker.svg", choices: ["Speaker", "Microphone", "Keyboard", "Chrome"], explain: "A speaker gives sound output." },
-  { name: "Browser", icon: "assets/images/browser.svg", choices: ["Browser", "Folder", "Printer", "CPU"], explain: "A browser is software used to visit websites." },
-  { name: "Internet", icon: "assets/images/internet.svg", choices: ["Internet", "MS Word", "Recycle Bin", "Mouse"], explain: "The internet is a worldwide network of connected computers." },
-  { name: "Password", icon: "assets/images/password.svg", choices: ["Password", "Printer", "Folder", "Speaker"], explain: "A password protects accounts and private information." },
-  { name: "Antivirus", icon: "assets/images/antivirus.svg", choices: ["Antivirus", "Chrome", "Keyboard", "Monitor"], explain: "Antivirus software helps protect a computer from harmful programs." }
-];
+let active = {
+  subject: "computer",
+  classId: "1",
+  level: "easy",
+  type: "quiz",
+  mode: "normal",
+  questions: [],
+  index: 0,
+  correct: 0,
+  roundXp: 0,
+  timer: null,
+  timeLeft: 30,
+  memoryOpen: [],
+  memoryMatched: 0
+};
 
 function defaultState() {
   return {
     xp: 0,
-    completedLevels: [],
-    badges: [],
     correct: 0,
     wrong: 0,
+    completed: {},
+    badges: [],
+    leaderboard: [],
     streak: 0,
     lastPlayed: "",
     dailyReward: "",
-    leaderboard: [],
     darkMode: false
   };
 }
@@ -266,47 +62,26 @@ function byId(id) {
   return document.getElementById(id);
 }
 
+function params() {
+  return new URLSearchParams(window.location.search);
+}
+
 function shuffle(items) {
   return [...items].sort(() => Math.random() - 0.5);
 }
 
-function setScreen(screenId) {
-  document.querySelectorAll(".screen").forEach((screen) => {
-    screen.classList.toggle("active", screen.id === screenId);
-  });
+function completionKey(subject, classId, level) {
+  return `${subject}-${classId}-${level}`;
 }
 
-function applyDarkMode() {
-  document.body.classList.toggle("dark", state.darkMode);
+function isComplete(subject, classId, level) {
+  return Boolean(state.completed[completionKey(subject, classId, level)]);
 }
 
-function setupDarkToggle() {
-  const toggle = byId("darkModeToggle");
-  if (!toggle) return;
-  toggle.addEventListener("click", () => {
-    state.darkMode = !state.darkMode;
-    saveState();
-    applyDarkMode();
-  });
-}
-
-function addXp(amount) {
-  state.xp = Math.max(0, state.xp + amount);
-  roundXp += amount;
-  saveState();
-  updateHud();
-}
-
-function recordAnswer(isCorrect) {
-  if (isCorrect) {
-    state.correct += 1;
-    roundCorrect += 1;
-    addXp(10);
-  } else {
-    state.wrong += 1;
-    addXp(-5);
-  }
-  saveState();
+function isUnlocked(subject, classId, level) {
+  if (level === "easy") return true;
+  if (level === "medium") return isComplete(subject, classId, "easy");
+  return isComplete(subject, classId, "medium");
 }
 
 function accuracy() {
@@ -314,63 +89,53 @@ function accuracy() {
   return total ? Math.round((state.correct / total) * 100) : 0;
 }
 
-function completedCount() {
-  return state.completedLevels.length;
+function applyDarkMode() {
+  document.body.classList.toggle("dark", state.darkMode);
 }
 
-function updateStreakAndReward() {
-  if (state.lastPlayed === todayKey) return;
+function setupDarkMode() {
+  const button = byId("darkModeToggle");
+  if (!button) return;
+  button.addEventListener("click", () => {
+    state.darkMode = !state.darkMode;
+    saveState();
+    applyDarkMode();
+  });
+}
 
+function updateStreak() {
+  if (state.lastPlayed === todayKey) return;
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayKey = yesterday.toISOString().slice(0, 10);
   state.streak = state.lastPlayed === yesterdayKey ? state.streak + 1 : 1;
   state.lastPlayed = todayKey;
-
   if (state.dailyReward !== todayKey) {
     state.xp += 20;
     state.dailyReward = todayKey;
-    showToast(`Daily reward unlocked: +20 XP. Streak: ${state.streak} day${state.streak === 1 ? "" : "s"}!`);
+    toast(`Daily reward: +20 XP. Come back tomorrow to keep your ${state.streak}-day streak!`);
   }
-
   saveState();
-  unlockBadges();
 }
 
-function unlockBadges() {
-  const newBadges = badges.filter((badge) => !state.badges.includes(badge.id) && badge.rule(state));
-  newBadges.forEach((badge) => {
-    state.badges.push(badge.id);
-    showToast(`Badge unlocked: ${badge.name}`);
-  });
-  if (newBadges.length) saveState();
+async function loadQuestions() {
+  if (questionData) return questionData;
+  const response = await fetch("questions.json");
+  questionData = await response.json();
+  return questionData;
 }
 
-function isUnlocked(levelId) {
-  return levelId === 1 || state.completedLevels.includes(levelId - 1);
-}
-
-function completeLevel(levelId) {
-  if (!state.completedLevels.includes(levelId)) {
-    state.completedLevels.push(levelId);
-    showToast(`Level ${levelId} completed! Next mission unlocked.`);
-    launchConfetti();
-    saveState();
-    unlockBadges();
-  }
-}
-
-function showToast(message) {
+function toast(message) {
   const zone = byId("toastZone");
   if (!zone) return;
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.textContent = message;
-  zone.appendChild(toast);
-  window.setTimeout(() => toast.remove(), 3600);
+  const item = document.createElement("div");
+  item.className = "toast";
+  item.textContent = message;
+  zone.appendChild(item);
+  window.setTimeout(() => item.remove(), 3600);
 }
 
-function launchConfetti() {
+function confetti() {
   const layer = byId("confettiLayer");
   if (!layer) return;
   const colors = ["#2563eb", "#7c3aed", "#f97316", "#16a34a", "#facc15"];
@@ -386,420 +151,430 @@ function launchConfetti() {
   window.setTimeout(() => { layer.innerHTML = ""; }, 1600);
 }
 
-function playSound(isCorrect) {
+function sound(correct) {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   if (!AudioContext) return;
   const ctx = new AudioContext();
-  const osc = ctx.createOscillator();
+  const oscillator = ctx.createOscillator();
   const gain = ctx.createGain();
-  osc.frequency.value = isCorrect ? 760 : 180;
-  osc.type = isCorrect ? "sine" : "square";
+  oscillator.frequency.value = correct ? 760 : 180;
+  oscillator.type = correct ? "sine" : "square";
   gain.gain.setValueAtTime(0.08, ctx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
-  osc.connect(gain);
+  oscillator.connect(gain);
   gain.connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime + 0.18);
+  oscillator.start();
+  oscillator.stop(ctx.currentTime + 0.18);
 }
 
-function renderLevelGrid(targetId, clickable = false) {
+function addXp(amount) {
+  state.xp = Math.max(0, state.xp + amount);
+  active.roundXp += amount;
+  saveState();
+  updateHud();
+}
+
+function record(correct) {
+  if (correct) {
+    state.correct += 1;
+    active.correct += 1;
+    addXp(10);
+  } else {
+    state.wrong += 1;
+  }
+  saveState();
+}
+
+function unlockBadges(subject) {
+  const earned = [];
+  const config = subjectConfig[subject];
+  if (config && !state.badges.includes(config.badge)) earned.push(config.badge);
+  if (state.xp >= 500 && !state.badges.includes("XP Hero")) earned.push("XP Hero");
+  const allSubjectsDone = Object.keys(subjectConfig).every((sid) =>
+    subjectConfig[sid].classes.some((cls) => levels.some((lvl) => isComplete(sid, String(cls), lvl)))
+  );
+  if (allSubjectsDone && !state.badges.includes("Knowledge Champion")) earned.push("Knowledge Champion");
+  earned.forEach((badge) => {
+    state.badges.push(badge);
+    toast(`Badge unlocked: ${badge}`);
+  });
+  if (earned.length) saveState();
+}
+
+function completeChallenge() {
+  state.completed[completionKey(active.subject, active.classId, active.level)] = true;
+  unlockBadges(active.subject);
+  saveState();
+}
+
+function updateHud() {
+  if (byId("hudXp")) byId("hudXp").textContent = state.xp;
+  if (byId("hudStreak")) byId("hudStreak").textContent = `${state.streak} days`;
+}
+
+function renderSubjectCards(targetId) {
   const grid = byId(targetId);
   if (!grid) return;
   grid.innerHTML = "";
-  levels.forEach((level) => {
-    const unlocked = isUnlocked(level.id);
-    const completed = state.completedLevels.includes(level.id);
-    const card = document.createElement(clickable && unlocked ? "button" : "article");
-    card.className = `level-card ${unlocked ? "" : "locked"} ${completed ? "completed" : ""}`;
+  Object.entries(subjectConfig).forEach(([id, subject]) => {
+    const done = subject.classes.reduce((sum, cls) => sum + levels.filter((lvl) => isComplete(id, String(cls), lvl)).length, 0);
+    const total = subject.classes.length * levels.length;
+    const card = document.createElement("article");
+    card.className = "subject-card";
     card.innerHTML = `
-      <span class="level-icon">${level.icon}</span>
-      <span class="lock-chip">${completed ? "Done" : unlocked ? "Open" : "Locked"}</span>
-      <h3>Level ${level.id}: ${level.title}</h3>
-      <p>${level.mission}</p>
+      <span class="subject-icon">${subject.icon}</span>
+      <h3>${subject.name}</h3>
+      <p>Classes ${subject.classes[0]}-${subject.classes[subject.classes.length - 1]} • ${done}/${total} challenges complete</p>
+      <div class="xp-track"><div class="xp-fill" style="width:${Math.round((done / total) * 100)}%"></div></div>
+      <a class="primary-button" href="class.html?subject=${id}">Open Mission</a>
     `;
-    if (clickable && unlocked) {
-      card.type = "button";
-      card.addEventListener("click", () => openSetup(level.id));
-    }
     grid.appendChild(card);
   });
 }
 
-function updateHud() {
-  const hudXp = byId("hudXp");
-  const hudStreak = byId("hudStreak");
-  if (hudXp) hudXp.textContent = state.xp;
-  if (hudStreak) hudStreak.textContent = `${state.streak} day${state.streak === 1 ? "" : "s"}`;
-}
-
-function initHome() {
+function renderHome() {
   byId("homeXp").textContent = state.xp;
-  byId("homeTotalXp").textContent = state.xp;
-  byId("homeCompleted").textContent = `${completedCount()}/${levels.length}`;
-  byId("homeStreak").textContent = `${state.streak} day${state.streak === 1 ? "" : "s"}`;
+  byId("homeAccuracy").textContent = `${accuracy()}%`;
+  byId("homeStreak").textContent = `${state.streak} days`;
   byId("homeBadges").textContent = state.badges.length;
-  renderLevelGrid("homeLevelGrid");
+  byId("dailyMessage").textContent = state.dailyReward === todayKey
+    ? "Daily reward claimed. Come back tomorrow for another bonus."
+    : "Play today to collect your daily reward XP.";
+  renderSubjectCards("homeSubjectGrid");
 }
 
-function initDashboard() {
-  byId("dashXp").textContent = state.xp;
-  byId("dashLevels").textContent = `${completedCount()}/${levels.length}`;
-  byId("dashAccuracy").textContent = `${accuracy()}%`;
-  byId("dashStreak").textContent = `${state.streak} day${state.streak === 1 ? "" : "s"}`;
-  byId("dashXpFill").style.width = `${state.xp % 100}%`;
-  renderLevelGrid("dashLevelGrid");
-  renderBadges();
-  renderLeaderboard();
+function renderSubjects() {
+  renderSubjectCards("subjectGrid");
 }
 
-function renderBadges() {
-  const grid = byId("dashBadges");
+function renderClasses() {
+  const subjectId = params().get("subject") || "computer";
+  const subject = subjectConfig[subjectId] || subjectConfig.computer;
+  byId("classEyebrow").textContent = `${subject.name} Mission`;
+  byId("classTitle").textContent = `Choose ${subject.name} Class`;
+  const grid = byId("classGrid");
   grid.innerHTML = "";
-  badges.forEach((badge) => {
-    const earned = state.badges.includes(badge.id);
-    const item = document.createElement("div");
-    item.className = `badge-card ${earned ? "" : "locked"}`;
-    item.textContent = `${earned ? "🏅" : "🔒"} ${badge.name}`;
-    grid.appendChild(item);
+  subject.classes.forEach((classId) => {
+    const card = document.createElement("article");
+    card.className = "class-card";
+    const buttons = levels.map((level) => {
+      const locked = !isUnlocked(subjectId, String(classId), level);
+      const complete = isComplete(subjectId, String(classId), level);
+      const href = `game.html?subject=${subjectId}&class=${classId}&level=${level}`;
+      return `<a class="challenge-button ${locked ? "locked" : ""} ${complete ? "completed" : ""}" ${locked ? "" : `href="${href}"`}>${locked ? "🔒 " : ""}${levelLabels[level]}</a>`;
+    }).join("");
+    card.innerHTML = `
+      <span class="subject-icon">${subject.icon}</span>
+      <h3>Class ${classId}</h3>
+      <p>Unlock Medium after Easy, and Hard after Medium.</p>
+      <div class="challenge-row">${buttons}</div>
+    `;
+    grid.appendChild(card);
   });
 }
 
-function renderLeaderboard() {
-  const list = byId("dashLeaderboard");
-  list.innerHTML = "";
-  const scores = [...state.leaderboard].sort((a, b) => b.score - a.score).slice(0, 5);
-  if (!scores.length) {
-    const item = document.createElement("li");
-    item.textContent = "No scores yet. Complete a round to appear here.";
-    list.appendChild(item);
-    return;
-  }
-  scores.forEach((score) => {
-    const item = document.createElement("li");
-    item.textContent = `${score.name}: ${score.score} XP (${score.date})`;
-    list.appendChild(item);
-  });
+function getBank(subject, classId, level) {
+  const bank = questionData.subjects[subject]?.classes?.[String(classId)]?.[level];
+  return bank || questionData.subjects.computer.classes["1"].easy;
 }
 
-function initGame() {
-  renderLevelGrid("gameLevelGrid", true);
+function pickSessionQuestions() {
+  const bank = getBank(active.subject, active.classId, active.level);
+  return shuffle(bank).slice(0, 10).map((item) => ({
+    ...item,
+    options: shuffle(item.options)
+  }));
+}
+
+function pickPictureQuestions() {
+  const classData = questionData.subjects[active.subject]?.classes?.[String(active.classId)];
+  const selected = classData ? [...classData[active.level]] : getBank(active.subject, active.classId, active.level);
+  const fallback = classData ? levels.flatMap((level) => classData[level]) : selected;
+  const candidates = shuffle([...selected, ...fallback]);
+  const picked = [];
+  const usedAnswers = new Set();
+
+  candidates.forEach((item) => {
+    if (picked.length >= 10) return;
+    if (usedAnswers.has(item.answer)) return;
+    picked.push({ ...item, options: shuffle(item.options) });
+    usedAnswers.add(item.answer);
+  });
+
+  candidates.forEach((item) => {
+    if (picked.length >= 10) return;
+    if (picked.some((pickedItem) => pickedItem.id === item.id)) return;
+    picked.push({ ...item, options: shuffle(item.options) });
+  });
+
+  return picked.slice(0, 10);
+}
+
+function renderGameSetup() {
+  active.subject = params().get("subject") || "computer";
+  active.classId = params().get("class") || String(subjectConfig[active.subject].classes[0]);
+  active.level = params().get("level") || "easy";
+  if (active.mode === "daily") chooseDaily();
+  const subject = subjectConfig[active.subject];
+  byId("gameBreadcrumb").textContent = `${subject.name} • Class ${active.classId} • ${levelLabels[active.level]}`;
+  byId("gameTitle").textContent = `${subject.name} Challenge`;
+  byId("missionText").textContent = `Become a Knowledge Champion by completing ${subject.name} Class ${active.classId} ${levelLabels[active.level]}.`;
   updateHud();
-  byId("backToLevelsBtn").addEventListener("click", () => setScreen("missionScreen"));
-  byId("startRoundBtn").addEventListener("click", startRound);
-  byId("nextActionBtn").addEventListener("click", nextAction);
-  byId("replayBtn").addEventListener("click", startRound);
-  byId("nextLevelBtn").addEventListener("click", goNextLevel);
 }
 
-function openSetup(levelId) {
-  currentLevel = levels.find((level) => level.id === levelId);
-  byId("gameTitle").textContent = `Level ${currentLevel.id}: ${currentLevel.title}`;
-  byId("setupLevelTitle").textContent = `Mission ${currentLevel.id}: ${currentLevel.title}`;
-  byId("setupStory").textContent = currentLevel.mission;
-  setScreen("setupScreen");
+function chooseDaily() {
+  const subjectIds = Object.keys(subjectConfig);
+  const subject = subjectIds[new Date().getDate() % subjectIds.length];
+  const cls = subjectConfig[subject].classes[new Date().getDay() % subjectConfig[subject].classes.length];
+  active.subject = subject;
+  active.classId = String(cls);
+  active.level = levels[new Date().getDate() % levels.length];
 }
 
 function startRound() {
-  currentMode = byId("gameMode").value;
-  currentType = byId("gameType").value;
-  currentIndex = 0;
-  roundXp = 0;
-  roundCorrect = 0;
-  matchedMemory = 0;
-  selectedMemory = [];
+  active.type = byId("gameType").value;
+  active.mode = byId("gameMode").value;
+  if (active.mode === "daily") chooseDaily();
+  active.questions = active.type === "picture" ? pickPictureQuestions() : pickSessionQuestions();
+  active.index = 0;
+  active.correct = 0;
+  active.roundXp = 0;
+  active.memoryOpen = [];
+  active.memoryMatched = 0;
+  byId("setupPanel").classList.add("hidden");
+  byId("playScreen").classList.add("active");
+  byId("summaryScreen").classList.remove("active");
   byId("roundXp").textContent = "0";
-  byId("answerFeedback").textContent = "";
-  byId("nextActionBtn").classList.add("hidden");
-
-  if (currentMode === "daily") {
-    currentLevel = levels[((new Date().getDate() - 1) % levels.length)];
-    currentType = "quiz";
-    showToast("Daily challenge loaded. Complete it for streak power!");
-  }
-
-  if (currentType === "quiz") roundItems = shuffle(currentLevel.questions);
-  if (currentType === "drag") roundItems = shuffle(currentLevel.drag);
-  if (currentType === "picture") roundItems = generatePictureRecognitionPool(currentLevel.id);
-  if (currentType === "memory") roundItems = shuffle(currentLevel.memory);
-  if (currentType === "fill") roundItems = shuffle(currentLevel.fills);
-
-  setScreen("playScreen");
-  renderCurrentGame();
+  renderCurrent();
 }
 
-function renderCurrentGame() {
+function renderCurrent() {
   clearTimer();
-  byId("roundXp").textContent = roundXp;
-  byId("roundProgress").style.width = `${Math.min(100, (currentIndex / getTotalSteps()) * 100)}%`;
-  byId("answerFeedback").className = "feedback";
   byId("answerFeedback").textContent = "";
+  byId("answerFeedback").className = "feedback";
   byId("nextActionBtn").classList.add("hidden");
-
-  if (currentType === "quiz") renderQuiz();
-  if (currentType === "drag") renderDrag();
-  if (currentType === "picture") renderPictureRecognition();
-  if (currentType === "memory") renderMemory();
-  if (currentType === "fill") renderFill();
-}
-
-function getTotalSteps() {
-  if (currentType === "memory") return roundItems.length;
-  if (currentType === "drag") return roundItems.length;
-  return roundItems.length;
+  byId("roundProgress").style.width = `${Math.round((active.index / 10) * 100)}%`;
+  if (active.type === "quiz") renderQuiz();
+  if (active.type === "picture") renderPicture();
+  if (active.type === "drag") renderDrag();
+  if (active.type === "memory") renderMemory();
+  if (active.type === "fill") renderFill();
 }
 
 function renderQuiz() {
-  const item = roundItems[currentIndex];
-  byId("roundLabel").textContent = `${currentModeLabel()} • Question ${currentIndex + 1} of ${roundItems.length}`;
+  const item = active.questions[active.index];
+  byId("roundLabel").textContent = `${modeLabel()} • Question ${active.index + 1} of 10`;
+  byId("gameArea").innerHTML = `<h2 class="question-title">${item.question}</h2><div class="choice-grid" id="choiceGrid"></div>`;
+  const grid = byId("choiceGrid");
+  item.options.forEach((choice) => addChoice(grid, choice, item.answer, item.explanation));
+  startTimer(() => answerChoice(null, "", item.answer, item.explanation));
+}
+
+function renderPicture() {
+  const item = active.questions[active.index];
+  byId("roundLabel").textContent = `${modeLabel()} • Picture ${active.index + 1} of 10`;
   byId("gameArea").innerHTML = `
-    <h2 class="question-title">${item.q}</h2>
+    <h2 class="question-title">Look at the image. What is the correct answer?</h2>
+    <div class="picture-display"><img src="${item.image}" alt="${item.answer} icon"></div>
     <div class="choice-grid" id="choiceGrid"></div>
   `;
   const grid = byId("choiceGrid");
-  shuffle(item.choices).forEach((choice) => {
-    const button = document.createElement("button");
-    button.className = "choice-button";
-    button.type = "button";
-    button.textContent = choice;
-    button.addEventListener("click", () => answerQuiz(button, choice, item));
-    grid.appendChild(button);
-  });
-  startTimerIfNeeded(() => answerQuiz(null, "", item));
+  item.options.forEach((choice) => addChoice(grid, choice, item.answer, item.explanation));
+  startTimer(() => answerChoice(null, "", item.answer, item.explanation));
 }
 
-function answerQuiz(button, choice, item) {
+function addChoice(grid, choice, answer, explanation) {
+  const button = document.createElement("button");
+  button.className = "choice-button";
+  button.type = "button";
+  button.textContent = choice;
+  button.addEventListener("click", () => answerChoice(button, choice, answer, explanation));
+  grid.appendChild(button);
+}
+
+function answerChoice(button, choice, answer, explanation) {
   clearTimer();
-  const correct = choice === item.answer;
+  const correct = choice === answer;
   document.querySelectorAll(".choice-button").forEach((btn) => {
     btn.disabled = true;
-    if (btn.textContent === item.answer) btn.classList.add("correct");
+    if (btn.textContent === answer) btn.classList.add("correct");
   });
   if (button && !correct) button.classList.add("wrong");
-  recordAnswer(correct);
-  playSound(correct);
-  showFeedback(correct, `${correct ? "Correct!" : "Wrong!"} ${item.explain}`);
-  byId("nextActionBtn").textContent = currentIndex === roundItems.length - 1 ? "Finish" : "Next";
-  byId("nextActionBtn").classList.remove("hidden");
-}
-
-function generatePictureRecognitionPool(levelId) {
-  const generated = [];
-  for (let index = 0; index < 1000; index += 1) {
-    const topic = pictureTopics[(index * 5 + levelId) % pictureTopics.length];
-    const distractors = pictureTopics
-      .filter((item) => item.name !== topic.name)
-      .map((item) => item.name);
-    generated.push({
-      ...topic,
-      id: `picture-${levelId}-${index}`,
-      question: `Picture card #${index + 1}: What computer item is shown?`,
-      choices: shuffle([topic.name, ...shuffle(distractors).slice(0, 3)])
-    });
-  }
-  const picked = [];
-  const usedNames = new Set();
-  shuffle(generated).forEach((card) => {
-    if (picked.length >= 10) return;
-    if (usedNames.has(card.name)) return;
-    picked.push(card);
-    usedNames.add(card.name);
-  });
-  return picked;
-}
-
-function renderPictureRecognition() {
-  const item = roundItems[currentIndex];
-  byId("roundLabel").textContent = `${currentModeLabel()} • Picture ${currentIndex + 1} of ${roundItems.length}`;
-  byId("gameArea").innerHTML = `
-    <h2 class="question-title">${item.question}</h2>
-    <div class="picture-display"><img src="${item.icon}" alt="${item.name} icon"></div>
-    <div class="picture-choice-grid" id="pictureChoiceGrid"></div>
-  `;
-  const grid = byId("pictureChoiceGrid");
-  item.choices.forEach((choice) => {
-    const button = document.createElement("button");
-    button.className = "choice-button";
-    button.type = "button";
-    button.textContent = choice;
-    button.addEventListener("click", () => answerPicture(button, choice, item));
-    grid.appendChild(button);
-  });
-  startTimerIfNeeded(() => answerPicture(null, "", item));
-}
-
-function answerPicture(button, choice, item) {
-  clearTimer();
-  const correct = choice === item.name;
-  document.querySelectorAll(".choice-button").forEach((btn) => {
-    btn.disabled = true;
-    if (btn.textContent === item.name) btn.classList.add("correct");
-  });
-  if (button && !correct) button.classList.add("wrong");
-  recordAnswer(correct);
-  playSound(correct);
-  showFeedback(correct, `${correct ? "Correct!" : "Wrong!"} ${item.explain}`);
-  byId("nextActionBtn").textContent = currentIndex === roundItems.length - 1 ? "Finish" : "Next";
+  record(correct);
+  sound(correct);
+  showFeedback(correct, `${correct ? "Correct!" : `Wrong! Answer: ${answer}.`} ${explanation}`);
+  byId("nextActionBtn").textContent = active.index === 9 ? "Finish" : "Next";
   byId("nextActionBtn").classList.remove("hidden");
 }
 
 function renderDrag() {
-  currentIndex = 0;
-  byId("roundLabel").textContent = `${currentModeLabel()} • Sort ${roundItems.length} cards`;
-  const categories = [...new Set(roundItems.map((item) => item[1]))];
-  byId("gameArea").innerHTML = `
-    <div class="drag-layout">
-      <div class="item-bank" id="dragBank"></div>
-      <div class="drop-zone-grid" id="dropGrid"></div>
-    </div>
-  `;
+  const items = active.questions.slice(0, 10);
+  byId("roundLabel").textContent = `${modeLabel()} • Drag & Drop Matching`;
+  byId("gameArea").innerHTML = `<div class="drag-layout"><div class="item-bank" id="dragBank"></div><div class="drop-zone-grid"><div class="drop-zone" data-category="answer"><h3>Correct Answer</h3><p>Drop real answers here</p></div><div class="drop-zone" data-category="distractor"><h3>Distractor</h3><p>Drop wrong options here</p></div></div></div>`;
   const bank = byId("dragBank");
-  const dropGrid = byId("dropGrid");
-  roundItems.forEach(([term, category], index) => {
-    const item = document.createElement("button");
-    item.type = "button";
-    item.className = "device-item";
-    item.draggable = true;
-    item.dataset.category = category;
-    item.dataset.id = `drag-${index}`;
-    item.textContent = term;
-    item.addEventListener("dragstart", (event) => {
-      item.classList.add("dragging");
-      event.dataTransfer.setData("text/plain", item.dataset.id);
-    });
-    item.addEventListener("dragend", () => item.classList.remove("dragging"));
-    bank.appendChild(item);
+  const cards = shuffle(items.flatMap((q, index) => [
+    { id: `a-${index}`, text: q.answer, category: "answer" },
+    { id: `d-${index}`, text: q.options.find((o) => o !== q.answer) || "Wrong Option", category: "distractor" }
+  ])).slice(0, 10);
+  active.dragTotal = cards.length;
+  active.dragDone = 0;
+  cards.forEach((card) => {
+    const el = document.createElement("button");
+    el.className = "device-item";
+    el.type = "button";
+    el.draggable = true;
+    el.dataset.id = card.id;
+    el.dataset.category = card.category;
+    el.textContent = card.text;
+    el.addEventListener("dragstart", (event) => event.dataTransfer.setData("text/plain", card.id));
+    bank.appendChild(el);
   });
-  categories.forEach((category) => {
-    const zone = document.createElement("div");
-    zone.className = "drop-zone";
-    zone.dataset.category = category;
-    zone.innerHTML = `<h3>${category}</h3><p>Drop matching cards here</p>`;
-    zone.addEventListener("dragover", (event) => {
-      event.preventDefault();
-      zone.classList.add("over");
-    });
-    zone.addEventListener("dragleave", () => zone.classList.remove("over"));
+  document.querySelectorAll(".drop-zone").forEach((zone) => {
+    zone.addEventListener("dragover", (event) => event.preventDefault());
     zone.addEventListener("drop", (event) => handleDrop(event, zone));
-    dropGrid.appendChild(zone);
   });
 }
 
 function handleDrop(event, zone) {
   event.preventDefault();
-  zone.classList.remove("over");
-  const item = document.querySelector(`[data-id="${event.dataTransfer.getData("text/plain")}"]`);
-  if (!item || item.classList.contains("placed")) return;
-  const correct = item.dataset.category === zone.dataset.category;
-  recordAnswer(correct);
-  playSound(correct);
+  const card = document.querySelector(`[data-id="${event.dataTransfer.getData("text/plain")}"]`);
+  if (!card || card.classList.contains("placed")) return;
+  const correct = card.dataset.category === zone.dataset.category;
+  record(correct);
+  sound(correct);
   if (correct) {
-    item.classList.add("placed");
-    item.draggable = false;
-    zone.appendChild(item);
-    currentIndex += 1;
-    showFeedback(true, `Correct! ${item.textContent} belongs in ${zone.dataset.category}.`);
-    byId("roundProgress").style.width = `${Math.min(100, (currentIndex / roundItems.length) * 100)}%`;
-    if (currentIndex === roundItems.length) finishRound();
+    card.classList.add("placed");
+    card.draggable = false;
+    zone.appendChild(card);
+    active.dragDone += 1;
+    byId("roundProgress").style.width = `${Math.round((active.dragDone / active.dragTotal) * 100)}%`;
+    showFeedback(true, "Correct match!");
+    if (active.dragDone === active.dragTotal) finishRound();
   } else {
-    showFeedback(false, "Try again. That card belongs in another category.");
+    showFeedback(false, "Try again. That card belongs in the other box.");
   }
 }
 
 function renderMemory() {
-  byId("roundLabel").textContent = `${currentModeLabel()} • Match all pairs`;
-  const cards = shuffle(roundItems.flatMap(([term, meaning], index) => [
-    { pair: index, text: term },
-    { pair: index, text: meaning }
-  ]));
+  const items = active.questions.slice(0, 5);
+  const cards = shuffle(items.flatMap((q, index) => [{ pair: index, text: q.answer }, { pair: index, text: q.explanation.split(".")[0] }]));
+  active.memoryMatched = 0;
+  byId("roundLabel").textContent = `${modeLabel()} • Memory Cards`;
   byId("gameArea").innerHTML = `<div class="memory-grid" id="memoryGrid"></div>`;
-  const grid = byId("memoryGrid");
   cards.forEach((card) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "memory-card";
-    button.dataset.pair = card.pair;
-    button.dataset.text = card.text;
-    button.textContent = "?";
-    button.addEventListener("click", () => flipMemory(button));
-    grid.appendChild(button);
+    const el = document.createElement("button");
+    el.className = "memory-card";
+    el.type = "button";
+    el.dataset.pair = card.pair;
+    el.dataset.text = card.text;
+    el.textContent = "?";
+    el.addEventListener("click", () => flipMemory(el));
+    byId("memoryGrid").appendChild(el);
   });
 }
 
 function flipMemory(card) {
-  if (card.classList.contains("matched") || card.classList.contains("flipped") || selectedMemory.length >= 2) return;
+  if (card.classList.contains("matched") || card.classList.contains("flipped") || active.memoryOpen.length >= 2) return;
   card.classList.add("flipped");
   card.textContent = card.dataset.text;
-  selectedMemory.push(card);
-  if (selectedMemory.length !== 2) return;
-
-  const [first, second] = selectedMemory;
+  active.memoryOpen.push(card);
+  if (active.memoryOpen.length < 2) return;
+  const [first, second] = active.memoryOpen;
   const correct = first.dataset.pair === second.dataset.pair;
-  recordAnswer(correct);
-  playSound(correct);
+  record(correct);
+  sound(correct);
   if (correct) {
     first.classList.add("matched");
     second.classList.add("matched");
-    matchedMemory += 1;
-    showFeedback(true, "Correct match! Robo learned another pair.");
-    byId("roundProgress").style.width = `${Math.min(100, (matchedMemory / roundItems.length) * 100)}%`;
-    selectedMemory = [];
-    if (matchedMemory === roundItems.length) finishRound();
+    active.memoryMatched += 1;
+    active.memoryOpen = [];
+    showFeedback(true, "Correct pair!");
+    byId("roundProgress").style.width = `${Math.round((active.memoryMatched / 5) * 100)}%`;
+    if (active.memoryMatched === 5) finishRound();
   } else {
-    showFeedback(false, "Not a match. Watch the cards carefully.");
+    showFeedback(false, "Not a match. Try again.");
     window.setTimeout(() => {
       first.classList.remove("flipped");
       second.classList.remove("flipped");
       first.textContent = "?";
       second.textContent = "?";
-      selectedMemory = [];
-    }, 850);
+      active.memoryOpen = [];
+    }, 800);
   }
 }
 
 function renderFill() {
-  const item = roundItems[currentIndex];
-  byId("roundLabel").textContent = `${currentModeLabel()} • Blank ${currentIndex + 1} of ${roundItems.length}`;
-  byId("gameArea").innerHTML = `
-    <div class="fill-box">
-      <h2 class="question-title">${item[0]}</h2>
-      <input class="fill-input" id="fillInput" type="text" autocomplete="off" placeholder="Type your answer">
-      <button class="primary-button" id="checkFillBtn" type="button">Check Answer</button>
-    </div>
-  `;
+  const item = active.questions[active.index];
+  byId("roundLabel").textContent = `${modeLabel()} • Fill ${active.index + 1} of 10`;
+  byId("gameArea").innerHTML = `<div class="fill-box"><h2 class="question-title">____ is the answer for this clue: ${item.question}</h2><input class="fill-input" id="fillInput" placeholder="Type answer"><button class="primary-button" id="checkFillBtn" type="button">Check Answer</button></div>`;
   byId("checkFillBtn").addEventListener("click", checkFill);
-  byId("fillInput").addEventListener("keydown", (event) => {
-    if (event.key === "Enter") checkFill();
-  });
-  startTimerIfNeeded(checkFill);
+  byId("fillInput").addEventListener("keydown", (event) => { if (event.key === "Enter") checkFill(); });
+  startTimer(checkFill);
 }
 
 function checkFill() {
   clearTimer();
-  const item = roundItems[currentIndex];
+  const item = active.questions[active.index];
   const value = byId("fillInput").value.trim().toLowerCase();
-  const correct = value === item[1].toLowerCase();
+  const correct = value === item.answer.toLowerCase();
   byId("fillInput").disabled = true;
   byId("checkFillBtn").disabled = true;
-  recordAnswer(correct);
-  playSound(correct);
-  showFeedback(correct, `${correct ? "Correct!" : `Wrong! Answer: ${item[1]}.`} ${item[2]}`);
-  byId("nextActionBtn").textContent = currentIndex === roundItems.length - 1 ? "Finish" : "Next";
+  record(correct);
+  sound(correct);
+  showFeedback(correct, `${correct ? "Correct!" : `Wrong! Answer: ${item.answer}.`} ${item.explanation}`);
+  byId("nextActionBtn").textContent = active.index === 9 ? "Finish" : "Next";
   byId("nextActionBtn").classList.remove("hidden");
 }
 
-function startTimerIfNeeded(onTimeout) {
+function showFeedback(correct, message) {
+  const feedback = byId("answerFeedback");
+  feedback.className = `feedback ${correct ? "correct" : "wrong"}`;
+  feedback.textContent = message;
+  byId("roundXp").textContent = active.roundXp;
+}
+
+function nextAction() {
+  active.index += 1;
+  if (active.index >= 10) finishRound();
+  else renderCurrent();
+}
+
+function finishRound() {
+  clearTimer();
+  const passed = active.correct >= 6 || active.type === "drag" || active.type === "memory";
+  if (passed) {
+    completeChallenge();
+    confetti();
+  }
+  updateLeaderboard();
+  byId("playScreen").classList.remove("active");
+  byId("summaryScreen").classList.add("active");
+  byId("summaryTitle").textContent = passed ? "Achievement Unlocked!" : "Try Again";
+  byId("summaryText").textContent = `${subjectConfig[active.subject].name} Class ${active.classId} ${levelLabels[active.level]}: ${active.correct}/10 correct. XP earned: ${active.roundXp}. ${passed ? "Next challenge unlocked!" : "Score 6 or more to unlock the next level."}`;
+  byId("nextChallengeLink").href = `class.html?subject=${active.subject}`;
+}
+
+function updateLeaderboard() {
+  if (active.roundXp <= 0) return;
+  state.leaderboard.push({ name: "Player", score: active.roundXp, date: todayKey, subject: subjectConfig[active.subject].name });
+  state.leaderboard = state.leaderboard.sort((a, b) => b.score - a.score).slice(0, 5);
+  saveState();
+}
+
+function startTimer(onTimeout) {
+  clearTimer();
   const pill = byId("timerPill");
-  if (currentMode !== "timer") {
+  if (active.mode !== "timer") {
     pill.classList.add("hidden");
     return;
   }
-  timeLeft = 30;
-  pill.textContent = `${timeLeft}s`;
+  active.timeLeft = 30;
+  pill.textContent = "30s";
   pill.classList.remove("hidden");
-  timer = window.setInterval(() => {
-    timeLeft -= 1;
-    pill.textContent = `${timeLeft}s`;
-    if (timeLeft <= 0) {
+  active.timer = window.setInterval(() => {
+    active.timeLeft -= 1;
+    pill.textContent = `${active.timeLeft}s`;
+    if (active.timeLeft <= 0) {
       clearTimer();
       onTimeout();
     }
@@ -807,69 +582,70 @@ function startTimerIfNeeded(onTimeout) {
 }
 
 function clearTimer() {
-  if (timer) window.clearInterval(timer);
-  timer = null;
-  const pill = byId("timerPill");
-  if (pill) pill.classList.add("hidden");
+  if (active.timer) window.clearInterval(active.timer);
+  active.timer = null;
+  if (byId("timerPill")) byId("timerPill").classList.add("hidden");
 }
 
-function showFeedback(correct, message) {
-  const feedback = byId("answerFeedback");
-  feedback.className = `feedback ${correct ? "correct" : "wrong"}`;
-  feedback.textContent = message;
-  byId("roundXp").textContent = roundXp;
-}
-
-function nextAction() {
-  currentIndex += 1;
-  if (currentIndex >= roundItems.length) {
-    finishRound();
-    return;
-  }
-  renderCurrentGame();
-}
-
-function finishRound() {
-  clearTimer();
-  const total = currentType === "memory" ? roundItems.length : roundItems.length;
-  const percent = Math.round((roundCorrect / Math.max(1, total)) * 100);
-  const completed = percent >= 60 || currentType === "drag" || currentType === "memory";
-  if (completed) completeLevel(currentLevel.id);
-  updateLeaderboard(roundXp);
-
-  byId("summaryTitle").textContent = completed ? "Level Completed" : "Mission Needs Replay";
-  byId("summaryText").textContent = `Score: ${roundCorrect}/${total}. XP this round: ${roundXp}. Accuracy: ${percent}%. ${completed ? "Robo is ready for the next mission." : "Replay to unlock the next level."}`;
-  byId("nextLevelBtn").classList.toggle("hidden", currentLevel.id >= levels.length || !completed);
-  setScreen("summaryScreen");
-}
-
-function updateLeaderboard(score) {
-  if (score <= 0) return;
-  const name = localStorage.getItem("ltg-player-name") || "Player";
-  state.leaderboard.push({ name, score, date: todayKey });
-  state.leaderboard = state.leaderboard.sort((a, b) => b.score - a.score).slice(0, 5);
-  saveState();
-}
-
-function goNextLevel() {
-  const next = levels.find((level) => level.id === currentLevel.id + 1);
-  if (next && isUnlocked(next.id)) openSetup(next.id);
-}
-
-function currentModeLabel() {
-  if (currentMode === "timer") return "Timer Mode";
-  if (currentMode === "daily") return "Daily Challenge";
+function modeLabel() {
+  if (active.mode === "timer") return "Timer Mode";
+  if (active.mode === "daily") return "Daily Challenge";
   return "Normal Mode";
 }
 
-function boot() {
-  applyDarkMode();
-  setupDarkToggle();
-  updateStreakAndReward();
-  const page = document.body.dataset.page;
-  if (page === "home") initHome();
-  if (page === "dashboard") initDashboard();
-  if (page === "game") initGame();
+function renderDashboard() {
+  byId("dashXp").textContent = state.xp;
+  byId("dashAccuracy").textContent = `${accuracy()}%`;
+  byId("dashCompleted").textContent = Object.keys(state.completed).length;
+  byId("dashStreak").textContent = `${state.streak} days`;
+  byId("dashXpFill").style.width = `${state.xp % 100}%`;
+  const badgeGrid = byId("dashBadges");
+  badgeGrid.innerHTML = "";
+  const badgeNames = [...Object.values(subjectConfig).map((s) => s.badge), "XP Hero", "Knowledge Champion"];
+  badgeNames.forEach((badge) => {
+    const card = document.createElement("div");
+    card.className = `badge-card ${state.badges.includes(badge) ? "" : "locked"}`;
+    card.textContent = `${state.badges.includes(badge) ? "🏅" : "🔒"} ${badge}`;
+    badgeGrid.appendChild(card);
+  });
+  const board = byId("dashLeaderboard");
+  board.innerHTML = "";
+  (state.leaderboard.length ? state.leaderboard : [{ name: "No scores yet", score: 0, date: "Play a game", subject: "" }]).slice(0, 5).forEach((entry) => {
+    const li = document.createElement("li");
+    li.textContent = `${entry.name}: ${entry.score} XP ${entry.subject ? `(${entry.subject}, ${entry.date})` : entry.date}`;
+    board.appendChild(li);
+  });
+  const progress = byId("subjectProgress");
+  progress.innerHTML = "";
+  Object.entries(subjectConfig).forEach(([id, subject]) => {
+    const total = subject.classes.length * levels.length;
+    const done = subject.classes.reduce((sum, cls) => sum + levels.filter((lvl) => isComplete(id, String(cls), lvl)).length, 0);
+    const row = document.createElement("div");
+    row.className = "progress-row";
+    row.innerHTML = `<strong>${subject.icon} ${subject.name}: ${done}/${total}</strong><div class="xp-track"><div class="xp-fill" style="width:${Math.round((done / total) * 100)}%"></div></div>`;
+    progress.appendChild(row);
+  });
 }
 
-boot();
+async function boot() {
+  applyDarkMode();
+  setupDarkMode();
+  updateStreak();
+  await loadQuestions();
+  const page = document.body.dataset.page;
+  if (page === "home") renderHome();
+  if (page === "subjects") renderSubjects();
+  if (page === "class") renderClasses();
+  if (page === "dashboard") renderDashboard();
+  if (page === "game") {
+    renderGameSetup();
+    byId("startRoundBtn").addEventListener("click", startRound);
+    byId("nextActionBtn").addEventListener("click", nextAction);
+    byId("replayBtn").addEventListener("click", startRound);
+  }
+}
+
+boot().catch((error) => {
+  console.error(error);
+  toast("Questions could not load. Please refresh the page.");
+});

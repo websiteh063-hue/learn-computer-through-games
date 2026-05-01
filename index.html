@@ -11,103 +11,53 @@
   <div class="toast-zone" id="toastZone" aria-live="polite"></div>
 
   <header class="topbar">
-    <a class="brand-button" href="index.html" aria-label="Learn Through Games home">
-      <span class="brand-icon">LTG</span>
-      <span>Learn Through Games</span>
-    </a>
-    <nav class="nav-actions" aria-label="Main navigation">
-      <a href="game.html">Play</a>
+    <a class="brand-button" href="index.html"><span class="brand-icon">LTG</span><span>Learn Through Games</span></a>
+    <nav class="nav-actions">
+      <a href="subjects.html">Subjects</a>
       <a href="dashboard.html">Dashboard</a>
-      <button class="icon-button" id="darkModeToggle" type="button" aria-label="Toggle dark mode">☾</button>
+      <button class="icon-button" id="darkModeToggle" type="button">☾</button>
     </nav>
   </header>
 
   <main class="app-shell">
-    <section class="hero-panel">
+    <section class="hero-panel champion-hero">
       <div class="hero-copy">
-        <p class="eyebrow">Story Mode</p>
-        <h1>Help a robot learn computers</h1>
-        <p class="subtitle">Complete missions, earn XP, unlock badges, build a streak, and master computer basics through games.</p>
+        <p class="eyebrow">Gamified EdTech Platform</p>
+        <h1>Become a Knowledge Champion 🏆</h1>
+        <p class="subtitle">Choose a subject mission, complete class challenges, earn XP, unlock badges, and climb your local leaderboard.</p>
         <div class="hero-actions">
-          <a class="primary-button" href="game.html">Start Game</a>
+          <a class="primary-button" href="subjects.html">Start Learning</a>
           <a class="secondary-button" href="dashboard.html">View Dashboard</a>
         </div>
       </div>
-      <div class="robot-card" aria-label="Robot learning companion">
-        <div class="robot-face">
-          <span class="robot-eye"></span>
-          <span class="robot-eye"></span>
-          <span class="robot-smile"></span>
-        </div>
-        <div class="robot-body">
-          <span>XP</span>
-          <strong id="homeXp">0</strong>
-        </div>
+      <div class="champion-card">
+        <div class="trophy-orb">🏆</div>
+        <h2>Daily Mission</h2>
+        <p id="dailyMessage">Come back every day to build your streak and collect bonus XP.</p>
       </div>
     </section>
 
-    <section class="stats-strip" aria-label="Player progress">
-      <article>
-        <span>Total XP</span>
-        <strong id="homeTotalXp">0</strong>
-      </article>
-      <article>
-        <span>Completed Levels</span>
-        <strong id="homeCompleted">0/4</strong>
-      </article>
-      <article>
-        <span>Streak</span>
-        <strong id="homeStreak">0 days</strong>
-      </article>
-      <article>
-        <span>Badges</span>
-        <strong id="homeBadges">0</strong>
-      </article>
+    <section class="stats-strip">
+      <article><span>Total XP</span><strong id="homeXp">0</strong></article>
+      <article><span>Accuracy</span><strong id="homeAccuracy">0%</strong></article>
+      <article><span>Streak</span><strong id="homeStreak">0 days</strong></article>
+      <article><span>Badges</span><strong id="homeBadges">0</strong></article>
     </section>
 
     <section class="section-heading">
-      <p class="eyebrow">Learning Path</p>
-      <h2>Four computer missions</h2>
+      <p class="eyebrow">Subject Missions</p>
+      <h2>Learn with games</h2>
     </section>
 
-    <section class="level-grid" id="homeLevelGrid" aria-label="Computer learning levels"></section>
+    <section class="subject-grid" id="homeSubjectGrid"></section>
 
-    <section class="game-type-grid" aria-label="Available game types">
-      <article class="feature-card">
-        <span class="feature-icon">?</span>
-        <h3>Normal Quiz</h3>
-        <p>Answer randomized questions with instant explanations.</p>
-      </article>
-      <article class="feature-card">
-        <span class="feature-icon">⏱</span>
-        <h3>Timer Mode</h3>
-        <p>Beat 30 seconds per question and earn faster XP.</p>
-      </article>
-      <article class="feature-card">
-        <span class="feature-icon">↔</span>
-        <h3>Drag & Drop</h3>
-        <p>Sort concepts into matching categories.</p>
-      </article>
-      <article class="feature-card">
-        <span class="feature-icon">◉</span>
-        <h3>Picture Recognition</h3>
-        <p>Identify original-style computer icons from 1000 generated cards.</p>
-      </article>
-      <article class="feature-card">
-        <span class="feature-icon">▦</span>
-        <h3>Memory Cards</h3>
-        <p>Match computer terms with their meanings.</p>
-      </article>
-      <article class="feature-card">
-        <span class="feature-icon">__</span>
-        <h3>Fill Blanks</h3>
-        <p>Type the missing word and learn by doing.</p>
-      </article>
-      <article class="feature-card">
-        <span class="feature-icon">★</span>
-        <h3>Daily Challenge</h3>
-        <p>Return daily for bonus XP and streak rewards.</p>
-      </article>
+    <section class="game-type-grid">
+      <article class="feature-card"><span class="feature-icon">?</span><h3>Quiz Mode</h3><p>10 shuffled MCQs with explanations.</p></article>
+      <article class="feature-card"><span class="feature-icon">⏱</span><h3>Timer Mode</h3><p>30 seconds per question for quick practice.</p></article>
+      <article class="feature-card"><span class="feature-icon">◉</span><h3>Picture Recognition</h3><p>Identify real-style icons and subject visuals.</p></article>
+      <article class="feature-card"><span class="feature-icon">↔</span><h3>Drag & Drop</h3><p>Match concepts by category.</p></article>
+      <article class="feature-card"><span class="feature-icon">▦</span><h3>Memory Cards</h3><p>Match terms with meanings.</p></article>
+      <article class="feature-card"><span class="feature-icon">__</span><h3>Fill Blanks</h3><p>Type the missing answer.</p></article>
     </section>
   </main>
 

@@ -360,6 +360,8 @@ body.dark .robot-card {
 }
 
 .level-grid,
+.subject-grid,
+.class-grid,
 .game-type-grid,
 .badge-grid {
   display: grid;
@@ -373,18 +375,23 @@ body.dark .robot-card {
 }
 
 .level-card,
+.subject-card,
+.class-card,
 .feature-card {
   padding: 22px;
   border-radius: 20px;
   transition: transform 160ms ease, opacity 160ms ease;
 }
 
-.level-card {
+.level-card,
+.subject-card,
+.class-card {
   position: relative;
   overflow: hidden;
 }
 
-.level-card.locked {
+.level-card.locked,
+.challenge-button.locked {
   opacity: 0.62;
   filter: grayscale(0.32);
 }
@@ -405,12 +412,16 @@ body.dark .robot-card {
 }
 
 .level-card h3,
+.subject-card h3,
+.class-card h3,
 .feature-card h3 {
   margin-top: 14px;
   font-size: 1.1rem;
 }
 
 .level-card p,
+.subject-card p,
+.class-card p,
 .feature-card p {
   margin: 10px 0 0;
   color: var(--muted);
@@ -419,7 +430,8 @@ body.dark .robot-card {
 }
 
 .feature-icon,
-.level-icon {
+.level-icon,
+.subject-icon {
   display: inline-grid;
   min-width: 52px;
   height: 52px;
@@ -429,6 +441,96 @@ body.dark .robot-card {
   color: #fff;
   background: linear-gradient(135deg, var(--blue), var(--purple));
   font-weight: 900;
+}
+
+.hero-lite h1 {
+  color: #fff;
+}
+
+.champion-hero {
+  grid-template-columns: 1.25fr 0.75fr;
+}
+
+.champion-card {
+  padding: 28px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fff, #fef3c7);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+body.dark .champion-card {
+  background: linear-gradient(135deg, #111827, #312e81);
+}
+
+.trophy-orb {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #facc15, #f97316);
+  font-size: 4.4rem;
+  animation: floaty 3s ease-in-out infinite;
+}
+
+.subject-card,
+.class-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.subject-card .primary-button {
+  margin-top: 18px;
+}
+
+.challenge-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.challenge-button {
+  min-height: 50px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.challenge-button.completed {
+  background: var(--green);
+}
+
+.challenge-button.locked {
+  cursor: not-allowed;
+  background: #64748b;
+}
+
+.progress-list {
+  display: grid;
+  gap: 12px;
+}
+
+.progress-row {
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--panel-solid);
+  box-shadow: var(--small-shadow);
+}
+
+.progress-row strong {
+  display: block;
+  margin-bottom: 8px;
 }
 
 .game-hud {
@@ -486,7 +588,7 @@ body.dark .robot-card {
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(249, 115, 22, 0.12));
 }
 
-.story-robot {
+.story-icon {
   display: grid;
   width: 74px;
   height: 74px;
@@ -866,6 +968,8 @@ body.dark .picture-display {
   .stats-strip,
   .dashboard-grid,
   .level-grid,
+  .subject-grid,
+  .class-grid,
   .game-type-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -901,6 +1005,8 @@ body.dark .picture-display {
   .stats-strip,
   .dashboard-grid,
   .level-grid,
+  .subject-grid,
+  .class-grid,
   .game-type-grid,
   .badge-grid,
   .memory-grid {
