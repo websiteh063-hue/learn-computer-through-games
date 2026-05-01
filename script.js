@@ -9,8 +9,8 @@ const difficultyWeights = { easy: 0.3, medium: 0.4, hard: 0.3 };
 
 const subjectConfig = {
   science: { name: "Science", icon: "🧪", classes: [5, 6, 7, 8, 9, 10], badge: "Science Explorer", color: "blue" },
-  maths: { name: "Maths", icon: "➗", classes: [5, 6, 7, 8, 9, 10], badge: "Math Master", color: "orange" },
-  english: { name: "English", icon: "📚", classes: [5, 6, 7, 8, 9, 10], badge: "English Pro", color: "purple" },
+  maths: { name: "Maths", icon: "➗", classes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], badge: "Math Master", color: "orange" },
+  english: { name: "English", icon: "📚", classes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], badge: "English Pro", color: "purple" },
   evs: { name: "EVS", icon: "🌱", classes: [1, 2, 3, 4], badge: "EVS Champ", color: "green" },
   computer: { name: "Computer", icon: "💻", classes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], badge: "Computer Genius", color: "blue" }
 };
